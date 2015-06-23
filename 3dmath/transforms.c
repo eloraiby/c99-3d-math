@@ -270,4 +270,3 @@ mat4_decompose(mat4_t m, vec3_t* scale, quat_t* rot, vec3_t* trans) {
 	*rot	= quat_from_mat3(rot_matrix);
 	return true;
 }
-

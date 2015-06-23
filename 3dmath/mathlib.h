@@ -361,8 +361,7 @@ static INLINE vec3_t		box3_get_max(box3_t b)			{ return vec3_add(b.center, b.ext
 static INLINE box3_t
 box3_from_min_max(vec3_t min, vec3_t max) {
 	box3_t res;
-	res.center = vec3_add(min, max);
-	res.center = vec3_mulf(res.center, 0.5f);
+	res.center = vec3_mulf(vec3_add(min, max), 0.5f);
 	res.extent = vec3_sub(max, res.center);
 	return res;
 }
@@ -441,6 +440,9 @@ tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
 **
 *******************************************************************************/
 bool				plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out);
+
+/*! @brief compute barycentric coordinate of a point v */
+vec3_t				tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
 
 /*******************************************************************************
 **

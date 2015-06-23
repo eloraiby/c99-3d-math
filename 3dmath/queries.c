@@ -31,3 +31,16 @@ plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out) {
 	return true;
 }
 
+vec3_t
+tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p) {
+	// create a coordinate system centered around v0
+	vec3_t	X	= vec3_sub(v1, v0);
+	vec3_t	Y	= vec3_sub(v3, v0);
+	vec3_t	Z	= vec3_cross(v0, v1);
+
+	return vec3_add(mat3_mul_vec3(mat3(X.x, X.y, X.z,
+					   Y.x, Y.y, Y.z,
+					   Z.x, Z.y, Z.z),
+				      p),
+			v0);
+}
