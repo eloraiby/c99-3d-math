@@ -46,6 +46,43 @@ typedef char		bool;
 #	define true	(!false)
 #endif
 
+#if defined _WIN32 || defined __CYGWIN__
+  #ifdef BUILDING_3DMATH_DLL
+    #ifdef __GNUC__
+      #define DLL_3DMATH_PUBLIC __attribute__ ((dllexport))
+    #else
+      #define DLL_3DMATH_PUBLIC __declspec(dllexport) // Note: actually gcc seems to also supports this syntax.
+    #endif
+  #else
+    #ifdef __GNUC__
+      #define DLL_3DMATH_PUBLIC __attribute__ ((dllimport))
+    #else
+      #define DLL_3DMATH_PUBLIC __declspec(dllimport) // Note: actually gcc seems to also supports this syntax.
+    #endif
+  #endif
+  #define DLL_3DMATH_LOCAL
+#else
+  #if __GNUC__ >= 4
+    #define DLL_3DMATH_PUBLIC __attribute__ ((visibility ("default")))
+    #define DLL_3DMATH_LOCAL  __attribute__ ((visibility ("hidden")))
+  #else
+    #define DLL_3DMATH_PUBLIC
+    #define DLL_3DMATH_LOCAL
+  #endif
+#endif
+
+
+#ifdef _MSC_VER
+#  define PACKED_STRUCT(name) \
+    __pragma(pack(push, 1)) struct name __pragma(pack(pop))
+#elif defined(__GNUC__)
+#  define PACKED_STRUCT(name) struct __attribute__((packed)) name
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef uint8_t		uint8;
 typedef uint16_t	uint16;
 typedef uint32_t	uint32;
@@ -113,6 +150,18 @@ typedef struct {
 
 static INLINE color3_t color3(float r, float g, float b)		{	color3_t ret	= { r, g, b };		return ret;	}
 static INLINE color4_t color4(float r, float g, float b, float a)	{	color4_t ret	= { r, g, b, a };	return ret;	}
+
+typedef struct {
+	uint8	r, g, b;
+} color3b_t;
+
+typedef struct {
+	uint8	r, g, b, a;
+} color4b_t;
+
+static INLINE color3b_t color3b(uint8 r, uint8 g, uint8 b)		{	color3b_t ret	= { r, g, b };		return ret;	}
+static INLINE color4b_t color4b(uint8 r, uint8 g, uint8 b, uint8 a)	{	color4b_t ret	= { r, g, b, a };	return ret;	}
+
 
 /*******************************************************************************
 ** vectors
@@ -238,25 +287,25 @@ static INLINE vec2_t mat2_row(mat2_t m, unsigned int idx)	{	return vec2(m.m[0][i
 static INLINE vec3_t mat3_row(mat3_t m, unsigned int idx)	{	return vec3(m.m[0][idx], m.m[1][idx], m.m[2][idx]);			}
 static INLINE vec4_t mat4_row(mat4_t m, unsigned int idx)	{	return vec4(m.m[0][idx], m.m[1][idx], m.m[2][idx], m.m[3][idx]);	}
 
-mat2_t mat2_mulm(mat2_t a, mat2_t b);
-mat3_t mat3_mulm(mat3_t a, mat3_t b);
-mat4_t mat4_mulm(mat4_t a, mat4_t b);
+DLL_3DMATH_PUBLIC mat2_t mat2_mulm(mat2_t a, mat2_t b);
+DLL_3DMATH_PUBLIC mat3_t mat3_mulm(mat3_t a, mat3_t b);
+DLL_3DMATH_PUBLIC mat4_t mat4_mulm(mat4_t a, mat4_t b);
 
-mat2_t mat2_mulf(mat2_t a, float b);
-mat3_t mat3_mulf(mat3_t a, float b);
-mat4_t mat4_mulf(mat4_t a, float b);
+DLL_3DMATH_PUBLIC mat2_t mat2_mulf(mat2_t a, float b);
+DLL_3DMATH_PUBLIC mat3_t mat3_mulf(mat3_t a, float b);
+DLL_3DMATH_PUBLIC mat4_t mat4_mulf(mat4_t a, float b);
 
-mat2_t mat2_inverse(mat2_t m);
-mat3_t mat3_inverse(mat3_t m);
-mat4_t mat4_inverse(mat4_t m);
+DLL_3DMATH_PUBLIC mat2_t mat2_inverse(mat2_t m);
+DLL_3DMATH_PUBLIC mat3_t mat3_inverse(mat3_t m);
+DLL_3DMATH_PUBLIC mat4_t mat4_inverse(mat4_t m);
 
-mat2_t mat2_transpose(mat2_t m);
-mat3_t mat3_transpose(mat3_t m);
-mat4_t mat4_transpose(mat4_t m);
+DLL_3DMATH_PUBLIC mat2_t mat2_transpose(mat2_t m);
+DLL_3DMATH_PUBLIC mat3_t mat3_transpose(mat3_t m);
+DLL_3DMATH_PUBLIC mat4_t mat4_transpose(mat4_t m);
 
-float mat2_determinant(mat2_t m);
-float mat3_determinant(mat3_t m);
-float mat4_determinant(mat4_t m);
+DLL_3DMATH_PUBLIC float mat2_determinant(mat2_t m);
+DLL_3DMATH_PUBLIC float mat3_determinant(mat3_t m);
+DLL_3DMATH_PUBLIC float mat4_determinant(mat4_t m);
 
 /* v' = m * v */
 static INLINE vec2_t mat2_mul_vec2(mat2_t m, vec2_t v) {
@@ -323,12 +372,12 @@ quat_mul(quat_t q0, quat_t q1)	{
 }
 
 
-mat3_t				mat3_from_quat(quat_t q);
-mat4_t				mat4_from_quat(quat_t q);
-void				quat_to_axis_angle(quat_t q, vec3_t *axis, float* angle);
-quat_t				quat_from_mat3(mat3_t m);
-quat_t				quat_from_mat4(mat4_t m);
-quat_t				quat_from_axis_angle(vec3_t axis, float angle);
+DLL_3DMATH_PUBLIC mat3_t			mat3_from_quat(quat_t q);
+DLL_3DMATH_PUBLIC mat4_t			mat4_from_quat(quat_t q);
+DLL_3DMATH_PUBLIC void				quat_to_axis_angle(quat_t q, vec3_t *axis, float* angle);
+DLL_3DMATH_PUBLIC quat_t			quat_from_mat3(mat3_t m);
+DLL_3DMATH_PUBLIC quat_t			quat_from_mat4(mat4_t m);
+DLL_3DMATH_PUBLIC quat_t			quat_from_axis_angle(vec3_t axis, float angle);
 
 /*******************************************************************************
 **
@@ -345,6 +394,24 @@ typedef struct {
 } rect_t;
 
 static INLINE rect_t		rect(float x, float y, float width, float height)	{ rect_t	r = { x, y, width, height }; return r;	}
+
+static INLINE rect_t		rect_from_vec2(vec2_t mn, vec2_t mx) {
+	float		min_x	= MIN(mn.x, mx.x);
+	float		min_y	= MIN(mn.y, mx.y);
+	float		max_x	= MAX(mn.x, mx.x);
+	float		max_y	= MAX(mn.y, mx.y);
+	rect_t		r = { min_x, min_y, max_x - min_x, max_y - min_y };
+	return r;
+}
+
+static INLINE rect_t		rect_min(rect_t r)					{ vec2_t	v = { r.x, r.y }; return v;	}
+static INLINE rect_t		rect_max(rect_t r)					{ vec2_t	v = { r.x + r.width, r.y + r.height}; return v;	}
+
+static INLINE rect_t		rect_intersect(rect_t r0, rect_t r1) {
+	vec2_t	min	= vec2_max(rect_min(r0), rect_min(r1));
+	vec2_t	max	= vec2_min(rect_max(r0), rect_max(r1));
+	return rect_from_vec2(min, max);
+}
 
 /*******************************************************************************
 **  box3
@@ -439,10 +506,10 @@ tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
 ** queries
 **
 *******************************************************************************/
-bool				plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out);
+DLL_3DMATH_PUBLIC bool				plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out);
 
 /*! @brief compute barycentric coordinate of a point v */
-vec3_t				tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
+DLL_3DMATH_PUBLIC vec3_t			tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
 
 /*******************************************************************************
 **
@@ -452,14 +519,14 @@ vec3_t				tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p
 
 /** @name orthogonal 2d projection matrix
  @{ */
-mat4_t				mat4_ortho (float left, float right, float bottom, float top);
-mat4_t				mat4_ortho2(vec2_t lb, vec2_t rt);
+DLL_3DMATH_PUBLIC mat4_t			mat4_ortho (float left, float right, float bottom, float top);
+DLL_3DMATH_PUBLIC mat4_t			mat4_ortho2(vec2_t lb, vec2_t rt);
 /* @} */
 
 /** @name orthogonal 3d projection matrix
  @{ */
-mat4_t				mat4_ortho3(vec3_t lbn, vec3_t rtf);
-mat4_t				mat4_ortho4(float left, float right, float bottom, float top, float near, float far);
+DLL_3DMATH_PUBLIC mat4_t			mat4_ortho3(vec3_t lbn, vec3_t rtf);
+DLL_3DMATH_PUBLIC mat4_t			mat4_ortho4(float left, float right, float bottom, float top, float near, float far);
 
 /* @} */
 
@@ -470,18 +537,18 @@ mat4_t				mat4_ortho4(float left, float right, float bottom, float top, float ne
  @param near near plane value
  @param far far plane value
 */
-mat4_t				mat4_perspective(float fovy, float aspect, float near, float far);
+DLL_3DMATH_PUBLIC mat4_t			mat4_perspective(float fovy, float aspect, float near, float far);
 
 /** translation matrix */
-mat4_t				mat4_translation(vec3_t trans);
+DLL_3DMATH_PUBLIC mat4_t			mat4_translation(vec3_t trans);
 
 /** scale matrix */
-mat4_t				mat4_scale(vec3_t scale);
+DLL_3DMATH_PUBLIC mat4_t			mat4_scale(vec3_t scale);
 
 /** @name rotation matrix
  @{ */
-mat4_t				mat4_rotation(quat_t q);
-mat4_t				mat4_rotation2(float angle, vec3_t axis);
+DLL_3DMATH_PUBLIC mat4_t			mat4_rotation(quat_t q);
+DLL_3DMATH_PUBLIC mat4_t			mat4_rotation2(float angle, vec3_t axis);
 /* @} */
 
 /**
@@ -491,7 +558,7 @@ mat4_t				mat4_rotation2(float angle, vec3_t axis);
  @param up the up vector
  @return the lookat matrix
 */
-mat4_t				mat4_lookat(vec3_t eye, vec3_t dest, vec3_t up);
+DLL_3DMATH_PUBLIC mat4_t			mat4_lookat(vec3_t eye, vec3_t dest, vec3_t up);
 
 /**
  frustum matrix
@@ -500,7 +567,7 @@ mat4_t				mat4_lookat(vec3_t eye, vec3_t dest, vec3_t up);
  @return the frustum matrix
  @note both near and far must be positive (the function will compute the frustum regardless even if it is not valid)
 */
-mat4_t				mat4_frustum(vec3_t lbn, vec3_t rtf);
+DLL_3DMATH_PUBLIC mat4_t			mat4_frustum(vec3_t lbn, vec3_t rtf);
 
 /**
  project a point to the screen
@@ -511,7 +578,7 @@ mat4_t				mat4_frustum(vec3_t lbn, vec3_t rtf);
  @param pt the input point
  @return the projected point
 */
-vec3_t				vec3_project(mat4_t world, mat4_t persp, vec2_t lb, vec2_t rt, vec3_t pt);
+DLL_3DMATH_PUBLIC vec3_t			vec3_project(mat4_t world, mat4_t persp, vec2_t lb, vec2_t rt, vec3_t pt);
 
 /**
  unproject a point to the 3d system
@@ -522,7 +589,7 @@ vec3_t				vec3_project(mat4_t world, mat4_t persp, vec2_t lb, vec2_t rt, vec3_t 
  @param pt the input point
  @return the unprojected point
 */
-vec3_t				vec3_unproject(mat4_t world, mat4_t persp, vec2_t lb, vec2_t rt, vec3_t pt);
+DLL_3DMATH_PUBLIC vec3_t			vec3_unproject(mat4_t world, mat4_t persp, vec2_t lb, vec2_t rt, vec3_t pt);
 
 /**
  @brief convert from world coordinates to local coordinates
@@ -530,7 +597,7 @@ vec3_t				vec3_unproject(mat4_t world, mat4_t persp, vec2_t lb, vec2_t rt, vec3_
  @param in the input world coordinates
  @return local coordinates
 */
-vec3_t				world3_to_local3(mat4_t world, vec3_t in);
+DLL_3DMATH_PUBLIC vec3_t			world3_to_local3(mat4_t world, vec3_t in);
 
 /*
 ** vector transform:
@@ -547,7 +614,7 @@ vec3_t				world3_to_local3(mat4_t world, vec3_t in);
  @return the transformed vector
  @note this will divide xyz by w
 */
-vec3_t				transform_vec3(mat4_t m, vec3_t in);
+DLL_3DMATH_PUBLIC vec3_t			transform_vec3(mat4_t m, vec3_t in);
 
 /**
  @brief transform a vec4 by a mat4
@@ -555,11 +622,15 @@ vec3_t				transform_vec3(mat4_t m, vec3_t in);
  @param in input vector
  @return the transformed vector
 */
-vec4_t				transform_vec4(mat4_t m, vec4_t in);
+DLL_3DMATH_PUBLIC vec4_t			transform_vec4(mat4_t m, vec4_t in);
 
 /**
  * decompose a matrix into scale, rotation and translation
  */
-bool				mat4_decompose(mat4_t m, vec3_t *scale, quat_t *rot, vec3_t *trans);
+DLL_3DMATH_PUBLIC bool				mat4_decompose(mat4_t m, vec3_t *scale, quat_t *rot, vec3_t *trans);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // MATHLIB_H

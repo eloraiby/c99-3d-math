@@ -9,6 +9,8 @@ QT       -= core gui
 TARGET = 3dmath
 TEMPLATE = lib
 
+QMAKE_CFLAGS	+= -DBUILDING_3DMATH_DLL
+
 SOURCES += \
     matrix.c \
     quaternion.c \
