@@ -404,8 +404,8 @@ static INLINE rect_t		rect_from_vec2(vec2_t mn, vec2_t mx) {
 	return r;
 }
 
-static INLINE rect_t		rect_min(rect_t r)					{ vec2_t	v = { r.x, r.y }; return v;	}
-static INLINE rect_t		rect_max(rect_t r)					{ vec2_t	v = { r.x + r.width, r.y + r.height}; return v;	}
+static INLINE vec2_t		rect_min(rect_t r)					{ vec2_t	v = { r.x, r.y }; return v;	}
+static INLINE vec2_t		rect_max(rect_t r)					{ vec2_t	v = { r.x + r.width, r.y + r.height}; return v;	}
 
 static INLINE rect_t		rect_intersect(rect_t r0, rect_t r1) {
 	vec2_t	min	= vec2_max(rect_min(r0), rect_min(r1));
