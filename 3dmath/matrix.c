@@ -16,7 +16,7 @@
 ** <http://www.gnu.org/licenses/>.
 **
 */
-
+#define BUILDING_3DMATH_DLL
 #include "mathlib.h"
 
 

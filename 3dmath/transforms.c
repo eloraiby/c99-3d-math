@@ -16,6 +16,7 @@
 ** <http://www.gnu.org/licenses/>.
 **
 */
+#define BUILDING_3DMATH_DLL
 #include "mathlib.h"
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -166,7 +167,7 @@ mat4_frustum(vec3_t lbn, vec3_t rtf) {
 
 mat4_t
 mat4_perspective(float fovy, float aspect, float near, float far) {
-	float	f	= 1.0f / tan(fovy * 0.5f);
+	float	f	= 1.0f / tanf(fovy * 0.5f);
 	float	denom	= near - far;
 	float	a	= (far + near) / denom;
 	float	b	= (2.0f * far * near) / denom;

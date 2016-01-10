@@ -16,7 +16,7 @@
 ** <http://www.gnu.org/licenses/>.
 **
 */
-
+#define BUILDING_3DMATH_DLL
 #include "mathlib.h"
 
 /*******************************************************************************
@@ -86,7 +86,7 @@ quat_to_axis_angle(quat_t q, vec3_t* axis, float *angle) {
 	float	cos_a = nq.w;
 	float	sin_a = sqrtf(1.0f - cos_a * cos_a);
 
-	*angle	= acos(cos_a) * 2.0f;
+	*angle	= acosf(cos_a) * 2.0f;
 
 	if( fabs(sin_a) < (1.0f / 8192.0f) )
 		sin_a = 1.0f;
@@ -213,7 +213,7 @@ quat_from_mat4(mat4_t m) {
 			float s = sqrtf(1.0f + mat10 - mat0 - mat5) * 2.0f;
 			q.x	= (mat2 + mat8) / s;
 			q.y	= (mat9 + mat6) / s;
-			q.z	= 0.25 * s;
+			q.z	= 0.25f * s;
 			q.w	= (mat4 - mat1) / s;
 		}
 	}
