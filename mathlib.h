@@ -36,7 +36,6 @@
  *
  * The above is only valid for structures that are trivially-copiable and trivially-destrucitble. All C structures (POD in C++) meet those criteria.
  */
-#include <stdint.h>
 #include <math.h>
 #include <float.h>
 
@@ -83,6 +82,9 @@ typedef char		bool;
 extern "C" {
 #endif
 
+#ifndef WAEL_DEFINED_TYPES
+#define WAEL_DEFINED_TYPES
+#include <stdint.h>
 typedef uint8_t		uint8;
 typedef uint16_t	uint16;
 typedef uint32_t	uint32;
@@ -92,6 +94,7 @@ typedef int8_t		sint8;
 typedef int16_t		sint16;
 typedef int32_t		sint32;
 typedef int64_t		sint64;
+#endif
 
 #ifndef M_PI
 #	define M_PI		3.14159265358979323846	/* pi */
