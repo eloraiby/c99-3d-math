@@ -166,6 +166,21 @@ static INLINE color4b_t color4b(uint8 r, uint8 g, uint8 b, uint8 a)	{	color4b_t 
 /*******************************************************************************
 ** vectors
 *******************************************************************************/
+
+/* int vectors */
+typedef struct {
+	int	x, y;
+} ivec2_t;
+
+typedef struct {
+	int	x, y, z;
+} ivec3_t;
+
+typedef struct {
+	int	x, y, z, w;
+} ivec4_t;
+
+/* float vectors */
 typedef struct {
 	float	x, y;
 } vec2_t;
@@ -510,6 +525,8 @@ DLL_3DMATH_PUBLIC bool				plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* o
 
 /*! @brief compute barycentric coordinate of a point v */
 DLL_3DMATH_PUBLIC vec3_t			tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
+
+DLL_3DMATH_PUBLIC bool				ray3_tri3_intersection(ray3_t r, vec3_t v1, vec3_t v2, vec3_t v3, vec3_t* out);
 
 /*******************************************************************************
 **
