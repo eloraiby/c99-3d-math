@@ -197,6 +197,11 @@ typedef struct {
 } vec4_t;
 
 /* constructors */
+static INLINE ivec2_t ivec2(int x, int y)				{	ivec2_t	ret	= { x, y };		return ret;		}
+static INLINE ivec3_t ivec3(int x, int y, int z)			{	ivec3_t	ret	= { x, y, z };		return ret;		}
+static INLINE ivec4_t ivec4(int x, int y, int z, int w)		{	ivec4_t	ret	= { x, y, z, w };	return ret;		}
+
+
 static INLINE vec2_t vec2(float x, float y)				{	vec2_t	ret	= { x, y };		return ret;		}
 static INLINE vec3_t vec3(float x, float y, float z)			{	vec3_t	ret	= { x, y, z };		return ret;		}
 static INLINE vec4_t vec4(float x, float y, float z, float w)		{	vec4_t	ret	= { x, y, z, w };	return ret;		}
