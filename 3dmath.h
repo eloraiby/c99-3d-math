@@ -1,5 +1,5 @@
-#ifndef MATHLIB_H
-#define MATHLIB_H
+#ifndef _3DMATH_H
+#define _3DMATH_H
 
 /*
 ** 3D math library Copyright 2015(c) Wael El Oraiby. All Rights Reserved
@@ -658,4 +658,4 @@ DLL_3DMATH_PUBLIC bool				mat4_decompose(mat4_t m, vec3_t *scale, quat_t *rot, v
 }
 #endif
 
-#endif // MATHLIB_H
+#endif // _3DMATH_H

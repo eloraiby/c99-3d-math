@@ -17,7 +17,7 @@
 **
 */
 #define BUILDING_3DMATH_DLL
-#include "mathlib.h"
+#include "3dmath.h"
 
 
 mat2_t

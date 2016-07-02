@@ -17,7 +17,7 @@
 **
 */
 #define BUILDING_3DMATH_DLL
-#include "mathlib.h"
+#include "3dmath.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 /// @name orthogonal 2d projection matrix (both tested)

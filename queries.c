@@ -17,7 +17,7 @@
 **
 */
 #define BUILDING_3DMATH_DLL
-#include "mathlib.h"
+#include "3dmath.h"
 
 bool
 plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out) {
