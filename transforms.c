@@ -242,10 +242,18 @@ transform_vec4(mat4_t m, vec4_t in) {
 	return mat4_mul_vec4(m, in);
 }
 
-
+/**
+ * @brief decompose a mat4 into scale, rotation and translation components
+ * @param m [in] the matrix to be decomposed
+ * @param scale [out] the scaling vector
+ * @param rot [out] the rotation quaternion
+ * @param trans [out] the translation vector
+ * @return true if decomposition is successfull
+ */
 bool
 mat4_decompose(mat4_t m, vec3_t* scale, quat_t* rot, vec3_t* trans) {
 	mat3_t	rot_matrix;
+	bool	ret		= true;
 	vec3_t	col0	= vec3(m.col[0].x, m.col[0].y, m.col[0].z);
 	vec3_t	col1	= vec3(m.col[1].x, m.col[1].y, m.col[1].z);
 	vec3_t	col2	= vec3(m.col[2].x, m.col[2].y, m.col[2].z);
@@ -257,17 +265,29 @@ mat4_decompose(mat4_t m, vec3_t* scale, quat_t* rot, vec3_t* trans) {
 	if( det < 0 )
 		*scale	= vec3_neg(*scale);
 
-	if( scale->x != 0.0f )
+	if( scale->x != 0.0f ) {
 		col0	= vec3_divf(col0, scale->x);
-	if( scale->y != 0.0f )
+	} else {
+		ret		= false;
+	}
+
+	if( scale->y != 0.0f ) {
 		col1	= vec3_divf(col1, scale->y);
-	if( scale->z != 0.0f )
+	} else {
+		ret		= false;
+	}
+
+	if( scale->z != 0.0f ) {
 		col2	= vec3_divf(col2, scale->z);
+	} else {
+		ret		= false;
+	}
 
 	rot_matrix	= mat3(col0.x, col0.y, col0.z,
 			       col1.x, col1.y, col1.z,
 			       col2.x, col2.y, col2.z);
 
 	*rot	= quat_from_mat3(rot_matrix);
-	return true;
+
+	return ret;
 }
