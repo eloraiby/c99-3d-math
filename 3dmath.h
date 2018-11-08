@@ -38,12 +38,7 @@
  */
 #include <math.h>
 #include <float.h>
-
-#ifndef __cplusplus
-typedef char		bool;
-#	define false	0
-#	define true	(!false)
-#endif
+#include <stdbool.h>
 
 #if defined _WIN32 || defined __CYGWIN__
   #ifdef BUILDING_3DMATH_DLL
@@ -82,19 +77,7 @@ typedef char		bool;
 extern "C" {
 #endif
 
-#ifndef WAEL_DEFINED_TYPES
-#define WAEL_DEFINED_TYPES
 #include <stdint.h>
-typedef uint8_t		uint8;
-typedef uint16_t	uint16;
-typedef uint32_t	uint32;
-typedef uint64_t	uint64;
-
-typedef int8_t		sint8;
-typedef int16_t		sint16;
-typedef int32_t		sint32;
-typedef int64_t		sint64;
-#endif
 
 #ifndef M_PI
 #	define M_PI		3.14159265358979323846	/* pi */
@@ -144,26 +127,26 @@ typedef int64_t		sint64;
 **
 *******************************************************************************/
 typedef struct {
-	float	r, g, b;
+    float	r, g, b;
 } color3_t;
 
 typedef struct {
-	float	r, g, b, a;
+    float	r, g, b, a;
 } color4_t;
 
 static INLINE color3_t color3(float r, float g, float b)		{	color3_t ret	= { r, g, b };		return ret;	}
 static INLINE color4_t color4(float r, float g, float b, float a)	{	color4_t ret	= { r, g, b, a };	return ret;	}
 
 typedef struct {
-	uint8	r, g, b;
+    uint8_t r, g, b;
 } color3b_t;
 
 typedef struct {
-	uint8	r, g, b, a;
+    uint8_t r, g, b, a;
 } color4b_t;
 
-static INLINE color3b_t color3b(uint8 r, uint8 g, uint8 b)		{	color3b_t ret	= { r, g, b };		return ret;	}
-static INLINE color4b_t color4b(uint8 r, uint8 g, uint8 b, uint8 a)	{	color4b_t ret	= { r, g, b, a };	return ret;	}
+static INLINE color3b_t color3b(uint8_t r, uint8_t g, uint8_t b)            {	color3b_t ret	= { r, g, b };		return ret;	}
+static INLINE color4b_t color4b(uint8_t r, uint8_t g, uint8_t b, uint8_t a)	{	color4b_t ret	= { r, g, b, a };	return ret;	}
 
 
 /*******************************************************************************
@@ -172,28 +155,28 @@ static INLINE color4b_t color4b(uint8 r, uint8 g, uint8 b, uint8 a)	{	color4b_t 
 
 /* int vectors */
 typedef struct {
-	int	x, y;
+    int	x, y;
 } ivec2_t;
 
 typedef struct {
-	int	x, y, z;
+    int	x, y, z;
 } ivec3_t;
 
 typedef struct {
-	int	x, y, z, w;
+    int	x, y, z, w;
 } ivec4_t;
 
 /* float vectors */
 typedef struct {
-	float	x, y;
+    float	x, y;
 } vec2_t;
 
 typedef struct {
-	float	x, y, z;
+    float	x, y, z;
 } vec3_t;
 
 typedef struct {
-	float	x, y, z, w;
+    float	x, y, z, w;
 } vec4_t;
 
 /* constructors */
@@ -268,43 +251,43 @@ static INLINE vec4_t vec4_normalize(vec4_t v)				{	float len = vec4_length(v); r
 **        | .. ..   ... |   | ...    ...    ... |
 */
 typedef union {
-	float	m[2][2];
-	vec2_t	col[2];
+    float	m[2][2];
+    vec2_t	col[2];
 } mat2_t;
 
 typedef union {
-	float	m[3][3];
-	vec3_t	col[3];
+    float	m[3][3];
+    vec3_t	col[3];
 } mat3_t;
 
 typedef union {
-	float	m[4][4];
-	vec4_t	col[4];
+    float	m[4][4];
+    vec4_t	col[4];
 } mat4_t;
 
 static INLINE mat2_t mat2(float m0, float m1,
-			  float m2, float m3)				{	mat2_t	m = {{ {m0, m1}, {m2, m3} }}; return m;			}
+              float m2, float m3)				{	mat2_t	m = {{ {m0, m1}, {m2, m3} }}; return m;			}
 
 static INLINE mat3_t mat3(float m0, float m1, float m2,
-			  float m3, float m4, float m5,
-			  float m6, float m7, float m8)			{	mat3_t	m = {{ {m0, m1, m2}, {m3, m4, m5}, {m6, m7, m8} }}; return m;		}
+              float m3, float m4, float m5,
+              float m6, float m7, float m8)			{	mat3_t	m = {{ {m0, m1, m2}, {m3, m4, m5}, {m6, m7, m8} }}; return m;		}
 
 static INLINE mat4_t mat4(float m0, float m1, float m2, float m3,
-			  float m4, float m5, float m6, float m7,
-			  float m8, float m9, float m10, float m11,
-			  float m12, float m13, float m14, float m15)	{	mat4_t	m = {{ {m0, m1, m2, m3}, {m4, m5, m6, m7}, {m8, m9, m10, m11}, {m12, m13, m14, m15} }}; return m;		}
+              float m4, float m5, float m6, float m7,
+              float m8, float m9, float m10, float m11,
+              float m12, float m13, float m14, float m15)	{	mat4_t	m = {{ {m0, m1, m2, m3}, {m4, m5, m6, m7}, {m8, m9, m10, m11}, {m12, m13, m14, m15} }}; return m;		}
 
 
 static INLINE mat2_t mat2_identity()				{	return mat2(1.0f, 0.0f,
-										    0.0f, 1.0f);		}
+                                            0.0f, 1.0f);		}
 static INLINE mat3_t mat3_identity()				{	return mat3(1.0f, 0.0f, 0.0f,
-										    0.0f, 1.0f, 0.0f,
-										    0.0f, 0.0f, 1.0f);		}
+                                            0.0f, 1.0f, 0.0f,
+                                            0.0f, 0.0f, 1.0f);		}
 
 static INLINE mat4_t mat4_identity()				{	return mat4(1.0f, 0.0f, 0.0f, 0.0f,
-										    0.0f, 1.0f, 0.0f, 0.0f,
-										    0.0f, 0.0f, 1.0f, 0.0f,
-										    0.0f, 0.0f, 0.0f, 1.0f);	}
+                                            0.0f, 1.0f, 0.0f, 0.0f,
+                                            0.0f, 0.0f, 1.0f, 0.0f,
+                                            0.0f, 0.0f, 0.0f, 1.0f);	}
 
 static INLINE vec2_t mat2_row(mat2_t m, unsigned int idx)	{	return vec2(m.m[0][idx], m.m[1][idx]);				}
 static INLINE vec3_t mat3_row(mat3_t m, unsigned int idx)	{	return vec3(m.m[0][idx], m.m[1][idx], m.m[2][idx]);			}
@@ -332,25 +315,25 @@ DLL_3DMATH_PUBLIC float mat4_determinant(mat4_t m);
 
 /* v' = m * v */
 static INLINE vec2_t mat2_mul_vec2(mat2_t m, vec2_t v) {
-	vec2_t	r0	= mat2_row(m, 0);
-	vec2_t	r1	= mat2_row(m, 1);
-	return vec2(vec2_dot(v, r0), vec2_dot(v, r1));
+    vec2_t	r0	= mat2_row(m, 0);
+    vec2_t	r1	= mat2_row(m, 1);
+    return vec2(vec2_dot(v, r0), vec2_dot(v, r1));
 }
 
 static INLINE vec3_t mat3_mul_vec3(mat3_t m, vec3_t v) {
-	vec3_t	r0	= mat3_row(m, 0);
-	vec3_t	r1	= mat3_row(m, 1);
-	vec3_t	r2	= mat3_row(m, 2);
-	return vec3(vec3_dot(v, r0), vec3_dot(v, r1), vec3_dot(v, r2));
+    vec3_t	r0	= mat3_row(m, 0);
+    vec3_t	r1	= mat3_row(m, 1);
+    vec3_t	r2	= mat3_row(m, 2);
+    return vec3(vec3_dot(v, r0), vec3_dot(v, r1), vec3_dot(v, r2));
 }
 
 static INLINE vec4_t mat4_mul_vec4(mat4_t m, vec4_t v) {
-	vec4_t	r0	= mat4_row(m, 0);
-	vec4_t	r1	= mat4_row(m, 1);
-	vec4_t	r2	= mat4_row(m, 2);
-	vec4_t	r3	= mat4_row(m, 3);
+    vec4_t	r0	= mat4_row(m, 0);
+    vec4_t	r1	= mat4_row(m, 1);
+    vec4_t	r2	= mat4_row(m, 2);
+    vec4_t	r3	= mat4_row(m, 3);
 
-	return vec4(vec4_dot(v, r0), vec4_dot(v, r1), vec4_dot(v, r2), vec4_dot(v, r3));
+    return vec4(vec4_dot(v, r0), vec4_dot(v, r1), vec4_dot(v, r2), vec4_dot(v, r3));
 }
 
 /* v' = v * m */
@@ -362,7 +345,7 @@ static INLINE vec4_t vec4_mul_mat4(vec4_t v, mat4_t m)		{	return vec4(vec4_dot(v
 ** quaternion
 *******************************************************************************/
 typedef struct {
-	float	x, y, z, w;
+    float	x, y, z, w;
 } quat_t;
 
 static INLINE quat_t		quat(float x, float y, float z, float w)	{ quat_t r = { x, y, z, w }; return r;	}
@@ -387,11 +370,11 @@ static INLINE quat_t		quat_inverse(quat_t q)				{ return quat_normalize(quat_con
 
 static INLINE quat_t
 quat_mul(quat_t q0, quat_t q1)	{
-	float	x = q0.w * q1.x + q0.x * q1.w + q0.y * q1.z - q0.z * q1.y;
-	float	y = q0.w * q1.y + q0.y * q1.w + q0.z * q1.x - q0.x * q1.z;
-	float	z = q0.w * q1.z + q0.z * q1.w + q0.x * q1.y - q0.y * q1.x;
-	float	w = q0.w * q1.w - q0.x * q1.x - q0.y * q1.y - q0.z * q1.z;
-	return quat_normalize(quat(x, y, z, w));
+    float	x = q0.w * q1.x + q0.x * q1.w + q0.y * q1.z - q0.z * q1.y;
+    float	y = q0.w * q1.y + q0.y * q1.w + q0.z * q1.x - q0.x * q1.z;
+    float	z = q0.w * q1.z + q0.z * q1.w + q0.x * q1.y - q0.y * q1.x;
+    float	w = q0.w * q1.w - q0.x * q1.x - q0.y * q1.y - q0.z * q1.z;
+    return quat_normalize(quat(x, y, z, w));
 }
 
 
@@ -412,36 +395,36 @@ DLL_3DMATH_PUBLIC quat_t			quat_from_axis_angle(vec3_t axis, float angle);
 **  rect
 *******************************************************************************/
 typedef struct {
-	float		x, y;
-	float		width, height;
+    float		x, y;
+    float		width, height;
 } rect_t;
 
 static INLINE rect_t		rect(float x, float y, float width, float height)	{ rect_t	r = { x, y, width, height }; return r;	}
 
 static INLINE rect_t		rect_from_vec2(vec2_t mn, vec2_t mx) {
-	float		min_x	= MIN(mn.x, mx.x);
-	float		min_y	= MIN(mn.y, mx.y);
-	float		max_x	= MAX(mn.x, mx.x);
-	float		max_y	= MAX(mn.y, mx.y);
-	rect_t		r = { min_x, min_y, max_x - min_x, max_y - min_y };
-	return r;
+    float		min_x	= MIN(mn.x, mx.x);
+    float		min_y	= MIN(mn.y, mx.y);
+    float		max_x	= MAX(mn.x, mx.x);
+    float		max_y	= MAX(mn.y, mx.y);
+    rect_t		r = { min_x, min_y, max_x - min_x, max_y - min_y };
+    return r;
 }
 
 static INLINE vec2_t		rect_min(rect_t r)					{ vec2_t	v = { r.x, r.y }; return v;	}
 static INLINE vec2_t		rect_max(rect_t r)					{ vec2_t	v = { r.x + r.width, r.y + r.height}; return v;	}
 
 static INLINE rect_t		rect_intersect(rect_t r0, rect_t r1) {
-	vec2_t	min	= vec2_max(rect_min(r0), rect_min(r1));
-	vec2_t	max	= vec2_min(rect_max(r0), rect_max(r1));
-	return rect_from_vec2(min, max);
+    vec2_t	min	= vec2_max(rect_min(r0), rect_min(r1));
+    vec2_t	max	= vec2_min(rect_max(r0), rect_max(r1));
+    return rect_from_vec2(min, max);
 }
 
 /*******************************************************************************
 **  box3
 *******************************************************************************/
 typedef struct {
-	vec3_t		center;
-	vec3_t		extent;
+    vec3_t		center;
+    vec3_t		extent;
 } box3_t;
 
 static INLINE box3_t		box3(vec3_t center, vec3_t extent)	{ box3_t b; b.center = center; b.extent = extent; return b; }
@@ -450,31 +433,31 @@ static INLINE vec3_t		box3_get_max(box3_t b)			{ return vec3_add(b.center, b.ext
 
 static INLINE box3_t
 box3_from_min_max(vec3_t min, vec3_t max) {
-	box3_t res;
-	res.center = vec3_mulf(vec3_add(min, max), 0.5f);
-	res.extent = vec3_sub(max, res.center);
-	return res;
+    box3_t res;
+    res.center = vec3_mulf(vec3_add(min, max), 0.5f);
+    res.extent = vec3_sub(max, res.center);
+    return res;
 }
 
 static INLINE box3_t
 box3_intersect(box3_t a, box3_t b) {
-	vec3_t	min_a	= box3_get_min(a);
-	vec3_t	max_a	= box3_get_max(a);
-	vec3_t	min_b	= box3_get_min(b);
-	vec3_t	max_b	= box3_get_max(b);
+    vec3_t	min_a	= box3_get_min(a);
+    vec3_t	max_a	= box3_get_max(a);
+    vec3_t	min_b	= box3_get_min(b);
+    vec3_t	max_b	= box3_get_max(b);
 
-	vec3_t	min_r	= vec3_max(min_a, min_b);
-	vec3_t	max_r	= vec3_min(max_a, max_b);
+    vec3_t	min_r	= vec3_max(min_a, min_b);
+    vec3_t	max_r	= vec3_min(max_a, max_b);
 
-	return box3_from_min_max(min_r, max_r);
+    return box3_from_min_max(min_r, max_r);
 }
 
 /*******************************************************************************
 ** ray3
 *******************************************************************************/
 typedef struct {
-	vec3_t			start;
-	vec3_t			direction;
+    vec3_t			start;
+    vec3_t			direction;
 } ray3_t;
 
 static INLINE ray3_t		ray3_from(vec3_t start, vec3_t direction)	{	ray3_t r; r.start = start; r.direction = direction; return r; }
@@ -494,7 +477,7 @@ static INLINE ray3_t		ray3_normalize(ray3_t r)			{	ray3_t ret; ret.start = r.sta
 **  plane
 *******************************************************************************/
 typedef struct {
-	float			a, b, c, d;
+    float			a, b, c, d;
 } plane_t;
 
 static INLINE plane_t		plane(float a, float b, float c, float d)	{	plane_t p = { a, b, c, d }; return p;		}
@@ -509,8 +492,8 @@ static INLINE float		plane_constant(plane_t p)			{	return p.d;					}
 */
 static INLINE plane_t
 plane_normalize(plane_t p) {
-	float		l	= vec3_length(plane_normal(p));
-	return plane_from(vec3_divf(plane_normal(p), l), p.d * l);
+    float		l	= vec3_length(plane_normal(p));
+    return plane_from(vec3_divf(plane_normal(p), l), p.d * l);
 }
 
 /*******************************************************************************
@@ -519,9 +502,9 @@ plane_normalize(plane_t p) {
 /*! @brief get the normal of the triange */
 static INLINE vec3_t
 tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
-	vec3_t v10 = vec3_sub(v1, v0);
-	vec3_t v20 = vec3_sub(v2, v0);
-	return vec3_normalize(vec3_cross(v10, v20));
+    vec3_t v10 = vec3_sub(v1, v0);
+    vec3_t v20 = vec3_sub(v2, v0);
+    return vec3_normalize(vec3_cross(v10, v20));
 }
 
 /*******************************************************************************
