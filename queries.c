@@ -65,23 +65,23 @@ ray3_tri3_intersection(ray3_t r, vec3_t v0, vec3_t v1, vec3_t v2, vec3_t* out) {
 
     // calculate distance from vert0 to ray origin
     vec3_t	tvec = vec3_sub(r.start, v0);
-    float	inv_det = 1.0f / det;
+    //float	inv_det = 1.0f / det;
 
     vec3_t qvec = vec3_cross(tvec, edge1);
 
-    float u = vec3_dot(tvec, pvec) * inv_det;
+    float u = vec3_dot(tvec, pvec) / det;
 
     if (u < 0.0f || u > 1.0f) {
         return false; // NoIntersection
     }
 
     // calculate V parameter and test bounds
-    float v = vec3_dot(r.direction, qvec) * inv_det;
+    float v = vec3_dot(r.direction, qvec) / det;
     if (v < 0.0f || u + v > 1.0f) {
         return false; // NoIntersection
     }
 
-    float t = vec3_dot(edge2, qvec) * inv_det;
+    float t = vec3_dot(edge2, qvec) / det;
     *out = vec3_add(r.start, vec3_mulf(r.direction, t));
     return true; //Intersect
 }

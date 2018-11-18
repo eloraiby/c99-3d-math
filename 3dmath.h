@@ -41,28 +41,28 @@
 #include <stdbool.h>
 
 #if defined _WIN32 || defined __CYGWIN__
-  #ifdef BUILDING_3DMATH_DLL
-    #ifdef __GNUC__
-      #define DLL_3DMATH_PUBLIC __attribute__ ((dllexport))
-    #else
-      #define DLL_3DMATH_PUBLIC __declspec(dllexport) // Note: actually gcc seems to also supports this syntax.
-    #endif
-  #else
-    #ifdef __GNUC__
-      #define DLL_3DMATH_PUBLIC __attribute__ ((dllimport))
-    #else
-      #define DLL_3DMATH_PUBLIC __declspec(dllimport) // Note: actually gcc seems to also supports this syntax.
-    #endif
-  #endif
-  #define DLL_3DMATH_LOCAL
+#ifdef BUILDING_3DMATH_DLL
+#ifdef __GNUC__
+#define DLL_3DMATH_PUBLIC __attribute__ ((dllexport))
 #else
-  #if __GNUC__ >= 4
-    #define DLL_3DMATH_PUBLIC __attribute__ ((visibility ("default")))
-    #define DLL_3DMATH_LOCAL  __attribute__ ((visibility ("hidden")))
-  #else
-    #define DLL_3DMATH_PUBLIC
-    #define DLL_3DMATH_LOCAL
-  #endif
+#define DLL_3DMATH_PUBLIC __declspec(dllexport) // Note: actually gcc seems to also supports this syntax.
+#endif
+#else
+#ifdef __GNUC__
+#define DLL_3DMATH_PUBLIC __attribute__ ((dllimport))
+#else
+#define DLL_3DMATH_PUBLIC __declspec(dllimport) // Note: actually gcc seems to also supports this syntax.
+#endif
+#endif
+#define DLL_3DMATH_LOCAL
+#else
+#if __GNUC__ >= 4
+#define DLL_3DMATH_PUBLIC __attribute__ ((visibility ("default")))
+#define DLL_3DMATH_LOCAL  __attribute__ ((visibility ("hidden")))
+#else
+#define DLL_3DMATH_PUBLIC
+#define DLL_3DMATH_LOCAL
+#endif
 #endif
 
 
@@ -179,15 +179,39 @@ typedef struct {
     float	x, y, z, w;
 } vec4_t;
 
+/* float vectors */
+typedef struct {
+    double	x, y;
+} dvec2_t;
+
+typedef struct {
+    double	x, y, z;
+} dvec3_t;
+
+typedef struct {
+    double	x, y, z, w;
+} dvec4_t;
+
 /* constructors */
 static INLINE ivec2_t ivec2(int x, int y)				{	ivec2_t	ret	= { x, y };		return ret;		}
 static INLINE ivec3_t ivec3(int x, int y, int z)			{	ivec3_t	ret	= { x, y, z };		return ret;		}
 static INLINE ivec4_t ivec4(int x, int y, int z, int w)		{	ivec4_t	ret	= { x, y, z, w };	return ret;		}
 
-
 static INLINE vec2_t vec2(float x, float y)				{	vec2_t	ret	= { x, y };		return ret;		}
 static INLINE vec3_t vec3(float x, float y, float z)			{	vec3_t	ret	= { x, y, z };		return ret;		}
 static INLINE vec4_t vec4(float x, float y, float z, float w)		{	vec4_t	ret	= { x, y, z, w };	return ret;		}
+
+static INLINE dvec2_t dvec2(double x, double y)				{	dvec2_t	ret	= { x, y };		return ret;		}
+static INLINE dvec3_t dvec3(double x, double y, double z)			{	dvec3_t	ret	= { x, y, z };		return ret;		}
+static INLINE dvec4_t dvec4(double x, double y, double z, double w)		{	dvec4_t	ret	= { x, y, z, w };	return ret;		}
+
+static INLINE dvec2_t dvec2_of_vec2(vec2_t v)				{	dvec2_t	ret	= { (double)v.x, (double)v.y };		return ret;		}
+static INLINE dvec3_t dvec3_of_vec3(vec3_t v)			{	dvec3_t	ret	= { (double)v.x, (double)v.y, (double)v.z };		return ret;		}
+static INLINE dvec4_t dvec4_of_vec4(vec4_t v)		{	dvec4_t	ret	= { (double)v.x, (double)v.y, (double)v.z, (double)v.w };	return ret;		}
+
+static INLINE vec2_t vec2_of_dvec2(dvec2_t v)				{	vec2_t	ret	= { (float)v.x, (float)v.y };		return ret;		}
+static INLINE vec3_t vec3_of_dvec3(dvec3_t v)			{	vec3_t	ret	= { (float)v.x, (float)v.y, (float)v.z };		return ret;		}
+static INLINE vec4_t vec4_of_dvec4(dvec4_t v)		{	vec4_t	ret	= { (float)v.x, (float)v.y, (float)v.z, (float)v.w };	return ret;		}
 
 /* arithmetic operations */
 static INLINE vec2_t vec2_neg(vec2_t v)					{	return vec2( -v.x, -v.y );		}
@@ -221,6 +245,39 @@ static INLINE bool vec2_eq(vec2_t a, vec2_t b)				{	return a.x == b.x && a.y == 
 static INLINE bool vec3_eq(vec3_t a, vec3_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z;			}
 static INLINE bool vec4_eq(vec4_t a, vec4_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;	}
 
+
+/* double */
+static INLINE dvec2_t dvec2_neg(dvec2_t v)					{	return dvec2( -v.x, -v.y );		}
+static INLINE dvec3_t dvec3_neg(dvec3_t v)					{	return dvec3( -v.x, -v.y, -v.z );	}
+static INLINE dvec4_t dvec4_neg(dvec4_t v)					{	return dvec4( -v.x, -v.y, -v.z, -v.w );	}
+
+static INLINE dvec2_t dvec2_add(dvec2_t a, dvec2_t b)			{	return dvec2( a.x + b.x, a.y + b.y );				}
+static INLINE dvec3_t dvec3_add(dvec3_t a, dvec3_t b)			{	return dvec3( a.x + b.x, a.y + b.y, a.z + b.z );			}
+static INLINE dvec4_t dvec4_add(dvec4_t a, dvec4_t b)			{	return dvec4( a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w );	}
+
+static INLINE dvec2_t dvec2_sub(dvec2_t a, dvec2_t b)			{	return dvec2( a.x - b.x, a.y - b.y );				}
+static INLINE dvec3_t dvec3_sub(dvec3_t a, dvec3_t b)			{	return dvec3( a.x - b.x, a.y - b.y, a.z - b.z );			}
+static INLINE dvec4_t dvec4_sub(dvec4_t a, dvec4_t b)			{	return dvec4( a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w );	}
+
+static INLINE dvec2_t dvec2_mulf(dvec2_t a, double b)			{	return dvec2( a.x * b, a.y * b );				}
+static INLINE dvec3_t dvec3_mulf(dvec3_t a, double b)			{	return dvec3( a.x * b, a.y * b, a.z * b );			}
+static INLINE dvec4_t dvec4_mulf(dvec4_t a, double b)			{	return dvec4( a.x * b, a.y * b, a.z * b, a.w * b );		}
+
+static INLINE dvec2_t dvec2_divf(dvec2_t a, double b)			{	return dvec2( a.x / b, a.y / b );				}
+static INLINE dvec3_t dvec3_divf(dvec3_t a, double b)			{	return dvec3( a.x / b, a.y / b, a.z / b );			}
+static INLINE dvec4_t dvec4_divf(dvec4_t a, double b)			{	return dvec4( a.x / b, a.y / b, a.z / b, a.w / b );		}
+
+static INLINE dvec2_t dvec2_min(dvec2_t a, dvec2_t b)			{	return dvec2(MIN(a.x, b.x), MIN(a.y, b.y));			}
+static INLINE dvec3_t dvec3_min(dvec3_t a, dvec3_t b)			{	return dvec3(MIN(a.x, b.x), MIN(a.y, b.y), MIN(a.z, b.z));	}
+static INLINE dvec4_t dvec4_min(dvec4_t a, dvec4_t b)			{	return dvec4(MIN(a.x, b.x), MIN(a.y, b.y), MIN(a.z, b.z), MIN(a.w, b.w));	}
+static INLINE dvec2_t dvec2_max(dvec2_t a, dvec2_t b)			{	return dvec2(MAX(a.x, b.x), MAX(a.y, b.y));			}
+static INLINE dvec3_t dvec3_max(dvec3_t a, dvec3_t b)			{	return dvec3(MAX(a.x, b.x), MAX(a.y, b.y), MAX(a.z, b.z));	}
+static INLINE dvec4_t dvec4_max(dvec4_t a, dvec4_t b)			{	return dvec4(MAX(a.x, b.x), MAX(a.y, b.y), MAX(a.z, b.z), MAX(a.w, b.w));	}
+
+static INLINE bool dvec2_eq(dvec2_t a, dvec2_t b)				{	return a.x == b.x && a.y == b.y;				}
+static INLINE bool dvec3_eq(dvec3_t a, dvec3_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z;			}
+static INLINE bool dvec4_eq(dvec4_t a, dvec4_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;	}
+
 /* geometric operations */
 static INLINE float vec2_dot(vec2_t a, vec2_t b)			{	return (a.x * b.x) + (a.y * b.y);				}
 static INLINE float vec3_dot(vec3_t a, vec3_t b)			{	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);			}
@@ -239,6 +296,25 @@ static INLINE float vec4_distance(vec4_t v0, vec4_t v1)			{	vec4_t	s = vec4_sub(
 static INLINE vec2_t vec2_normalize(vec2_t v)				{	float len = vec2_length(v); return vec2_divf(v, len);		}
 static INLINE vec3_t vec3_normalize(vec3_t v)				{	float len = vec3_length(v); return vec3_divf(v, len);		}
 static INLINE vec4_t vec4_normalize(vec4_t v)				{	float len = vec4_length(v); return vec4_divf(v, len);		}
+
+/* double */
+static INLINE double dvec2_dot(dvec2_t a, dvec2_t b)			{	return (a.x * b.x) + (a.y * b.y);				}
+static INLINE double dvec3_dot(dvec3_t a, dvec3_t b)			{	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z);			}
+static INLINE double dvec4_dot(dvec4_t a, dvec4_t b)			{	return (a.x * b.x) + (a.y * b.y) + (a.z * b.z) + (a.w * b.w);	}
+
+static INLINE dvec3_t dvec3_cross(dvec3_t a, dvec3_t b)			{	return dvec3(a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x);	}
+
+static INLINE double dvec2_length(dvec2_t v)				{	return sqrt(dvec2_dot(v, v));					}
+static INLINE double dvec3_length(dvec3_t v)				{	return sqrt(dvec3_dot(v, v));					}
+static INLINE double dvec4_length(dvec4_t v)				{	return sqrt(dvec4_dot(v, v));					}
+
+static INLINE double dvec2_distance(dvec2_t v0, dvec2_t v1)			{	dvec2_t	s = dvec2_sub(v1, v0); return dvec2_length(s);		}
+static INLINE double dvec3_distance(dvec3_t v0, dvec3_t v1)			{	dvec3_t	s = dvec3_sub(v1, v0); return dvec3_length(s);		}
+static INLINE double dvec4_distance(dvec4_t v0, dvec4_t v1)			{	dvec4_t	s = dvec4_sub(v1, v0); return dvec4_length(s);		}
+
+static INLINE dvec2_t dvec2_normalize(dvec2_t v)				{	double len = dvec2_length(v); return dvec2_divf(v, len);		}
+static INLINE dvec3_t dvec3_normalize(dvec3_t v)				{	double len = dvec3_length(v); return dvec3_divf(v, len);		}
+static INLINE dvec4_t dvec4_normalize(dvec4_t v)				{	double len = dvec4_length(v); return dvec4_divf(v, len);		}
 
 /*******************************************************************************
 ** matrices
@@ -266,28 +342,28 @@ typedef union {
 } mat4_t;
 
 static INLINE mat2_t mat2(float m0, float m1,
-              float m2, float m3)				{	mat2_t	m = {{ {m0, m1}, {m2, m3} }}; return m;			}
+                          float m2, float m3)				{	mat2_t	m = {{ {m0, m1}, {m2, m3} }}; return m;			}
 
 static INLINE mat3_t mat3(float m0, float m1, float m2,
-              float m3, float m4, float m5,
-              float m6, float m7, float m8)			{	mat3_t	m = {{ {m0, m1, m2}, {m3, m4, m5}, {m6, m7, m8} }}; return m;		}
+                          float m3, float m4, float m5,
+                          float m6, float m7, float m8)			{	mat3_t	m = {{ {m0, m1, m2}, {m3, m4, m5}, {m6, m7, m8} }}; return m;		}
 
 static INLINE mat4_t mat4(float m0, float m1, float m2, float m3,
-              float m4, float m5, float m6, float m7,
-              float m8, float m9, float m10, float m11,
-              float m12, float m13, float m14, float m15)	{	mat4_t	m = {{ {m0, m1, m2, m3}, {m4, m5, m6, m7}, {m8, m9, m10, m11}, {m12, m13, m14, m15} }}; return m;		}
+                          float m4, float m5, float m6, float m7,
+                          float m8, float m9, float m10, float m11,
+                          float m12, float m13, float m14, float m15)	{	mat4_t	m = {{ {m0, m1, m2, m3}, {m4, m5, m6, m7}, {m8, m9, m10, m11}, {m12, m13, m14, m15} }}; return m;		}
 
 
 static INLINE mat2_t mat2_identity()				{	return mat2(1.0f, 0.0f,
-                                            0.0f, 1.0f);		}
+                                                                    0.0f, 1.0f);		}
 static INLINE mat3_t mat3_identity()				{	return mat3(1.0f, 0.0f, 0.0f,
-                                            0.0f, 1.0f, 0.0f,
-                                            0.0f, 0.0f, 1.0f);		}
+                                                                    0.0f, 1.0f, 0.0f,
+                                                                    0.0f, 0.0f, 1.0f);		}
 
 static INLINE mat4_t mat4_identity()				{	return mat4(1.0f, 0.0f, 0.0f, 0.0f,
-                                            0.0f, 1.0f, 0.0f, 0.0f,
-                                            0.0f, 0.0f, 1.0f, 0.0f,
-                                            0.0f, 0.0f, 0.0f, 1.0f);	}
+                                                                    0.0f, 1.0f, 0.0f, 0.0f,
+                                                                    0.0f, 0.0f, 1.0f, 0.0f,
+                                                                    0.0f, 0.0f, 0.0f, 1.0f);	}
 
 static INLINE vec2_t mat2_row(mat2_t m, unsigned int idx)	{	return vec2(m.m[0][idx], m.m[1][idx]);				}
 static INLINE vec3_t mat3_row(mat3_t m, unsigned int idx)	{	return vec3(m.m[0][idx], m.m[1][idx], m.m[2][idx]);			}
