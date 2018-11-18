@@ -47,8 +47,6 @@ tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p) {
 
 #define EPSILON (1.0f / (1024.0f * 1024.0f))
 
-#define EPSILON (1.0f / (1024.0f * 1024.0f))
-
 bool
 ray3_tri3_intersection(ray3_t r, vec3_t v0, vec3_t v1, vec3_t v2, vec3_t* out) {
     // find vectors for two edges sharing vert0
@@ -61,31 +59,29 @@ ray3_tri3_intersection(ray3_t r, vec3_t v0, vec3_t v1, vec3_t v2, vec3_t* out) {
     // if determinant is near zero, ray lies in plane of triangle
     float det = vec3_dot(edge1, pvec);
 
+    if (det > -EPSILON && det < EPSILON) {
+        return false; // Parallel
+    }
+
     // calculate distance from vert0 to ray origin
     vec3_t	tvec = vec3_sub(r.start, v0);
     float	inv_det = 1.0f / det;
 
     vec3_t qvec = vec3_cross(tvec, edge1);
 
-    if (det > -EPSILON && det < EPSILON) {
-        return false; // Parallel
+    float u = vec3_dot(tvec, pvec) * inv_det;
+
+    if (u < 0.0f || u > 1.0f) {
+        return false; // NoIntersection
     }
-    else {
-        float u = vec3_dot(tvec, pvec) * inv_det;
-        if (u < 0.0f || u > 1.0f) {
-            return false; // NoIntersection
-        }
-        else {
-            // calculate V parameter and test bounds
-            float v = vec3_dot(r.direction, qvec) * inv_det;
-            if (v < 0.0f || u + v > 1.0f) {
-                return false; // NoIntersection
-            }
-            else {
-                float t = vec3_dot(edge2, qvec) * inv_det;
-                *out = vec3_add(r.start, vec3_mulf(r.direction, t));
-                return true; //Intersect
-            }
-        }
+
+    // calculate V parameter and test bounds
+    float v = vec3_dot(r.direction, qvec) * inv_det;
+    if (v < 0.0f || u + v > 1.0f) {
+        return false; // NoIntersection
     }
+
+    float t = vec3_dot(edge2, qvec) * inv_det;
+    *out = vec3_add(r.start, vec3_mulf(r.direction, t));
+    return true; //Intersect
 }
