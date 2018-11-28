@@ -19,6 +19,107 @@
 #define BUILDING_3DMATH_DLL
 #include "3dmath.h"
 
+#define EPSILON (1.0f / (1024.0f * 1024.f))
+
+///
+/// the projection of the point onto the segment (2D)
+///
+vec2_t
+closest_on_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt) {
+    vec2_t  seg_dir	= vec2_sub(seg_end, seg_start);
+    vec2_t  pt_dir	= vec2_sub(pt, seg_start);
+
+
+    float d_sp      = vec2_dot(seg_dir, pt_dir);
+    float d_ss      = vec2_dot(seg_dir, seg_dir);	// remember, always > 0
+
+    if( d_sp < 0.0f )
+        return seg_start;
+    else if( d_sp > d_ss )
+        return seg_end;
+
+    float t = d_sp / d_ss; // should be float ?
+
+    // proj	= seg.start + t * seg_dir;
+    return vec2_add(vec2_mulf(seg_dir, t), seg_start);
+}
+
+///
+/// the projection of the point onto the segment (3D)
+///
+vec3_t
+closest_on_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt) {
+    vec3_t  seg_dir	= vec3_sub(seg_end, seg_start);
+    vec3_t  pt_dir	= vec3_sub(pt, seg_start);
+
+
+    float d_sp      = vec3_dot(seg_dir, pt_dir);
+    float d_ss      = vec3_dot(seg_dir, seg_dir);	// remember, always > 0
+
+    if( d_sp < 0.0f )
+        return seg_start;
+    else if( d_sp > d_ss )
+        return seg_end;
+
+    float t = d_sp / d_ss; // should be float ?
+
+    // proj	= seg.start + t * seg_dir;
+    return vec3_add(vec3_mulf(seg_dir, t), seg_start);
+}
+
+///
+/// distance between a point and a segment (2D)
+///
+float
+distance_to_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt) {
+
+    vec2_t  seg_dir	= vec2_sub(seg_end, seg_start);
+    vec2_t  pt_dir  = vec2_sub(pt, seg_start);
+
+    float   d_sp    = vec2_dot(seg_dir, pt_dir);
+    float   d_ss    = vec2_dot(seg_dir, seg_dir);	// remember, always > 0
+
+    if( d_sp < 0.0f )
+        return vec2_length(pt_dir);
+    else if( d_sp > d_ss )
+        return vec2_length(vec2_sub(pt, seg_end));
+
+    float   t   = d_sp / d_ss;	// should be float ?
+
+    // proj	= seg.start + t * seg_dir;
+    return vec2_length(vec2_sub(pt,
+                                vec2_add(seg_start,
+                                         vec2_mulf(seg_dir, t))));
+}
+
+///
+/// distance between a point and a segment (2D)
+///
+float
+distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt) {
+
+    vec3_t  seg_dir	= vec3_sub(seg_end, seg_start);
+    vec3_t  pt_dir  = vec3_sub(pt, seg_start);
+
+    float   d_sp    = vec3_dot(seg_dir, pt_dir);
+    float   d_ss    = vec3_dot(seg_dir, seg_dir);	// remember, always > 0
+
+    if( d_sp < 0.0f )
+        return vec3_length(pt_dir);
+    else if( d_sp > d_ss )
+        return vec3_length(vec3_sub(pt, seg_end));
+
+    float   t   = d_sp / d_ss;	// should be float ?
+
+    // proj	= seg.start + t * seg_dir;
+    return vec3_length(vec3_sub(pt,
+                                vec3_add(seg_start,
+                                         vec3_mulf(seg_dir, t))));
+}
+
+///
+/// plane and ray intersection
+///
 bool
 plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out) {
     vec3_t	n	= plane_normal(p);
@@ -45,8 +146,11 @@ tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p) {
             v0);
 }
 
-#define EPSILON (1.0f / (1024.0f * 1024.0f))
-
+/* Ray-Triangle Intersection Test Routines          */
+/* Different optimizations of my and Ben Trumbore's */
+/* code from journals of graphics tools (JGT)       */
+/* http://www.acm.org/jgt/                          */
+/* by Tomas Moller, May 2000                        */
 bool
 ray3_tri3_intersection(ray3_t r, vec3_t v0, vec3_t v1, vec3_t v2, vec3_t* out) {
     // find vectors for two edges sharing vert0

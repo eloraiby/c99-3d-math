@@ -588,12 +588,17 @@ tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
 ** queries
 **
 *******************************************************************************/
-DLL_3DMATH_PUBLIC bool				plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out);
+DLL_3DMATH_PUBLIC bool              plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out);
 
 /*! @brief compute barycentric coordinate of a point v */
-DLL_3DMATH_PUBLIC vec3_t			tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
+DLL_3DMATH_PUBLIC vec3_t            tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
 
-DLL_3DMATH_PUBLIC bool				ray3_tri3_intersection(ray3_t r, vec3_t v1, vec3_t v2, vec3_t v3, vec3_t* out);
+DLL_3DMATH_PUBLIC bool              ray3_tri3_intersection(ray3_t r, vec3_t v1, vec3_t v2, vec3_t v3, vec3_t* out);
+
+DLL_3DMATH_PUBLIC vec2_t            closest_on_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt);
+DLL_3DMATH_PUBLIC vec3_t            closest_on_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt);
+DLL_3DMATH_PUBLIC float             distance_to_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt);
+DLL_3DMATH_PUBLIC float             distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt);
 
 /*******************************************************************************
 **
