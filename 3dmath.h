@@ -591,7 +591,10 @@ tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
 DLL_3DMATH_PUBLIC bool              plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out);
 
 /*! @brief compute barycentric coordinate of a point v */
-DLL_3DMATH_PUBLIC vec3_t            tri3_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
+DLL_3DMATH_PUBLIC vec3_t            tri3_point_of_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
+DLL_3DMATH_PUBLIC vec3_t            tri3_get_point_barycentric_coordinates(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t p);
+DLL_3DMATH_PUBLIC vec2_t            tri2_point_of_barycentric_coordinates(vec2_t v0, vec2_t v1, vec2_t v2, vec2_t p);
+DLL_3DMATH_PUBLIC vec2_t            tri2_get_point_barycentric_coordinates(vec2_t v0, vec2_t v1, vec2_t v2, vec2_t p);
 
 DLL_3DMATH_PUBLIC bool              ray3_tri3_intersection(ray3_t r, vec3_t v1, vec3_t v2, vec3_t v3, vec3_t* out);
 
