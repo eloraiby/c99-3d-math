@@ -214,6 +214,39 @@ static INLINE vec3_t vec3_of_dvec3(dvec3_t v)			{	vec3_t	ret	= { (float)v.x, (fl
 static INLINE vec4_t vec4_of_dvec4(dvec4_t v)		{	vec4_t	ret	= { (float)v.x, (float)v.y, (float)v.z, (float)v.w };	return ret;		}
 
 /* arithmetic operations */
+/* int */
+static INLINE ivec2_t ivec2_neg(ivec2_t v)                      {	return ivec2( -v.x, -v.y );		}
+static INLINE ivec3_t ivec3_neg(ivec3_t v)                      {	return ivec3( -v.x, -v.y, -v.z );	}
+static INLINE ivec4_t ivec4_neg(ivec4_t v)                      {	return ivec4( -v.x, -v.y, -v.z, -v.w );	}
+
+static INLINE ivec2_t ivec2_add(ivec2_t a, ivec2_t b)			{	return ivec2( a.x + b.x, a.y + b.y );				}
+static INLINE ivec3_t ivec3_add(ivec3_t a, ivec3_t b)			{	return ivec3( a.x + b.x, a.y + b.y, a.z + b.z );			}
+static INLINE ivec4_t ivec4_add(ivec4_t a, ivec4_t b)			{	return ivec4( a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w );	}
+
+static INLINE ivec2_t ivec2_sub(ivec2_t a, ivec2_t b)			{	return ivec2( a.x - b.x, a.y - b.y );				}
+static INLINE ivec3_t ivec3_sub(ivec3_t a, ivec3_t b)			{	return ivec3( a.x - b.x, a.y - b.y, a.z - b.z );			}
+static INLINE ivec4_t ivec4_sub(ivec4_t a, ivec4_t b)			{	return ivec4( a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w );	}
+
+static INLINE ivec2_t ivec2_muli(ivec2_t a, int b)              {	return ivec2( a.x * b, a.y * b );				}
+static INLINE ivec3_t ivec3_muli(ivec3_t a, int b)              {	return ivec3( a.x * b, a.y * b, a.z * b );			}
+static INLINE ivec4_t ivec4_muli(ivec4_t a, int b)              {	return ivec4( a.x * b, a.y * b, a.z * b, a.w * b );		}
+
+static INLINE ivec2_t ivec2_divi(ivec2_t a, int b)              {	return ivec2( a.x / b, a.y / b );				}
+static INLINE ivec3_t ivec3_divi(ivec3_t a, int b)              {	return ivec3( a.x / b, a.y / b, a.z / b );			}
+static INLINE ivec4_t ivec4_divi(ivec4_t a, int b)              {	return ivec4( a.x / b, a.y / b, a.z / b, a.w / b );		}
+
+static INLINE ivec2_t ivec2_min(ivec2_t a, ivec2_t b)			{	return ivec2(MIN(a.x, b.x), MIN(a.y, b.y));			}
+static INLINE ivec3_t ivec3_min(ivec3_t a, ivec3_t b)			{	return ivec3(MIN(a.x, b.x), MIN(a.y, b.y), MIN(a.z, b.z));	}
+static INLINE ivec4_t ivec4_min(ivec4_t a, ivec4_t b)			{	return ivec4(MIN(a.x, b.x), MIN(a.y, b.y), MIN(a.z, b.z), MIN(a.w, b.w));	}
+static INLINE ivec2_t ivec2_max(ivec2_t a, ivec2_t b)			{	return ivec2(MAX(a.x, b.x), MAX(a.y, b.y));			}
+static INLINE ivec3_t ivec3_max(ivec3_t a, ivec3_t b)			{	return ivec3(MAX(a.x, b.x), MAX(a.y, b.y), MAX(a.z, b.z));	}
+static INLINE ivec4_t ivec4_max(ivec4_t a, ivec4_t b)			{	return ivec4(MAX(a.x, b.x), MAX(a.y, b.y), MAX(a.z, b.z), MAX(a.w, b.w));	}
+
+static INLINE bool ivec2_eq(ivec2_t a, ivec2_t b)				{	return a.x == b.x && a.y == b.y;				}
+static INLINE bool ivec3_eq(ivec3_t a, ivec3_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z;			}
+static INLINE bool ivec4_eq(ivec4_t a, ivec4_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;	}
+
+/* float */
 static INLINE vec2_t vec2_neg(vec2_t v)					{	return vec2( -v.x, -v.y );		}
 static INLINE vec3_t vec3_neg(vec3_t v)					{	return vec3( -v.x, -v.y, -v.z );	}
 static INLINE vec4_t vec4_neg(vec4_t v)					{	return vec4( -v.x, -v.y, -v.z, -v.w );	}
@@ -245,7 +278,13 @@ static INLINE bool vec2_eq(vec2_t a, vec2_t b)				{	return a.x == b.x && a.y == 
 static INLINE bool vec3_eq(vec3_t a, vec3_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z;			}
 static INLINE bool vec4_eq(vec4_t a, vec4_t b)				{	return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;	}
 
+static INLINE vec2_t vec3_xy(vec3_t v)                      { return vec2(v.x, v.y); }
+static INLINE vec2_t vec3_yz(vec3_t v)                      { return vec2(v.y, v.z); }
+static INLINE vec2_t vec3_xz(vec3_t v)                      { return vec2(v.x, v.z); }
 
+static INLINE vec2_t vec3_yx(vec3_t v)                      { return vec2(v.y, v.x); }
+static INLINE vec2_t vec3_zy(vec3_t v)                      { return vec2(v.z, v.y); }
+static INLINE vec2_t vec3_zx(vec3_t v)                      { return vec2(v.z, v.x); }
 /* double */
 static INLINE dvec2_t dvec2_neg(dvec2_t v)					{	return dvec2( -v.x, -v.y );		}
 static INLINE dvec3_t dvec3_neg(dvec3_t v)					{	return dvec3( -v.x, -v.y, -v.z );	}
@@ -493,6 +532,31 @@ static INLINE rect_t		rect_intersect(rect_t r0, rect_t r1) {
     vec2_t	min	= vec2_max(rect_min(r0), rect_min(r1));
     vec2_t	max	= vec2_min(rect_max(r0), rect_max(r1));
     return rect_from_vec2(min, max);
+}
+
+typedef struct {
+    int         x, y;
+    int         width, height;
+} irect_t;
+
+static INLINE irect_t		irect(int x, int y, int width, int height)  {   irect_t r = { x, y, width, height }; return r;	}
+
+static INLINE irect_t		irect_from_vec2(ivec2_t mn, ivec2_t mx) {
+    int         min_x   = MIN(mn.x, mx.x);
+    int         min_y   = MIN(mn.y, mx.y);
+    int         max_x   = MAX(mn.x, mx.x);
+    int         max_y   = MAX(mn.y, mx.y);
+    irect_t		r = { min_x, min_y, max_x - min_x, max_y - min_y };
+    return r;
+}
+
+static INLINE ivec2_t       irect_min(irect_t r)					{ ivec2_t	v = { r.x, r.y }; return v;	}
+static INLINE ivec2_t       irect_max(irect_t r)					{ ivec2_t	v = { r.x + r.width, r.y + r.height}; return v;	}
+
+static INLINE irect_t       irect_intersect(irect_t r0, irect_t r1) {
+    ivec2_t	min	= ivec2_max(irect_min(r0), irect_min(r1));
+    ivec2_t	max	= ivec2_min(irect_max(r0), irect_max(r1));
+    return irect_from_vec2(min, max);
 }
 
 /*******************************************************************************
