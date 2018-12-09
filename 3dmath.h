@@ -413,9 +413,9 @@ static INLINE vec4_t mat4_mul_vec4(mat4_t m, vec4_t v) {
 }
 
 /* v' = v * m */
-static INLINE vec2_t vec2_mul_mat2(vec2_t v, mat2_t m)		{	return vec2(vec2_dot(v, m.col[0]), vec2_dot(v, m.col[1]));	}
-static INLINE vec3_t vec3_mul_mat3(vec3_t v, mat3_t m)		{	return vec3(vec3_dot(v, m.col[0]), vec3_dot(v, m.col[1]), vec3_dot(v, m.col[2]));	}
-static INLINE vec4_t vec4_mul_mat4(vec4_t v, mat4_t m)		{	return vec4(vec4_dot(v, m.col[0]), vec4_dot(v, m.col[1]), vec4_dot(v, m.col[2]), vec4_dot(v, m.col[3]));	}
+static INLINE vec2_t    vec2_mul_mat2(vec2_t v, mat2_t m)           {	return vec2(vec2_dot(v, m.col[0]), vec2_dot(v, m.col[1]));	}
+static INLINE vec3_t    vec3_mul_mat3(vec3_t v, mat3_t m)           {	return vec3(vec3_dot(v, m.col[0]), vec3_dot(v, m.col[1]), vec3_dot(v, m.col[2]));	}
+static INLINE vec4_t    vec4_mul_mat4(vec4_t v, mat4_t m)           {	return vec4(vec4_dot(v, m.col[0]), vec4_dot(v, m.col[1]), vec4_dot(v, m.col[2]), vec4_dot(v, m.col[3]));	}
 
 /*******************************************************************************
 ** quaternion
@@ -424,25 +424,25 @@ typedef struct {
     float	x, y, z, w;
 } quat_t;
 
-static INLINE quat_t		quat(float x, float y, float z, float w)	{ quat_t r = { x, y, z, w }; return r;	}
-static INLINE quat_t		quat_neg(quat_t q)				{ quat_t r = { -q.x, -q.y, -q.z, -q.w }; return r;	}
-static INLINE quat_t		quat_add(quat_t q0, quat_t q1)			{ quat_t r = { q0.x + q1.x, q0.y + q1.y, q0.z + q1.z, q0.w + q1.w }; return r;	}
-static INLINE quat_t		quat_addf(quat_t q0, float q1)			{ quat_t r = { q0.x + q1, q0.y + q1, q0.z + q1, q0.w + q1 }; return r;	}
-static INLINE quat_t		quat_sub(quat_t q0, quat_t q1)			{ quat_t r = { q0.x - q1.x, q0.y - q1.y, q0.z - q1.z, q0.w - q1.w }; return r;	}
-static INLINE quat_t		quat_subf(quat_t q0, float q1)			{ quat_t r = { q0.x - q1, q0.y - q1, q0.z - q1, q0.w - q1 }; return r;	}
-static INLINE quat_t		quat_fsub(float q0, quat_t q1)			{ quat_t r = { q0 - q1.x, q0 - q1.y, q0 - q1.z, q0 - q1.w }; return r;	}
-static INLINE quat_t		quat_mulf(quat_t q0, float q1)			{ quat_t r = { q0.x * q1, q0.y * q1, q0.z * q1, q0.w * q1 }; return r;	}
-static INLINE quat_t		quat_fmul(float q0, quat_t q1)			{ quat_t r = { q0 * q1.x, q0 * q1.y, q0 * q1.z, q0 * q1.w }; return r;	}
-static INLINE quat_t		quat_divf(quat_t q0, float q1)			{ quat_t r = { q0.x / q1, q0.y / q1, q0.z / q1, q0.w / q1 }; return r;	}
-static INLINE quat_t		quat_fdiv(float q0, quat_t q1)			{ quat_t r = { q0 / q1.x, q0 / q1.y, q0 / q1.z, q0 / q1.w }; return r;	}
-static INLINE bool		quat_eq(quat_t q0, quat_t q1)			{ return (q0.x == q1.x && q0.y == q1.y && q0.z == q1.z && q0.w == q1.w);	}
-static INLINE bool		quat_neq(quat_t q0, quat_t q1)			{ return !quat_eq(q0, q1); }
+static INLINE quat_t        quat(float x, float y, float z, float w){ quat_t r = { x, y, z, w }; return r;	}
+static INLINE quat_t        quat_neg(quat_t q)                      { quat_t r = { -q.x, -q.y, -q.z, -q.w }; return r;	}
+static INLINE quat_t        quat_add(quat_t q0, quat_t q1)          { quat_t r = { q0.x + q1.x, q0.y + q1.y, q0.z + q1.z, q0.w + q1.w }; return r;	}
+static INLINE quat_t        quat_addf(quat_t q0, float q1)          { quat_t r = { q0.x + q1, q0.y + q1, q0.z + q1, q0.w + q1 }; return r;	}
+static INLINE quat_t        quat_sub(quat_t q0, quat_t q1)          { quat_t r = { q0.x - q1.x, q0.y - q1.y, q0.z - q1.z, q0.w - q1.w }; return r;	}
+static INLINE quat_t        quat_subf(quat_t q0, float q1)          { quat_t r = { q0.x - q1, q0.y - q1, q0.z - q1, q0.w - q1 }; return r;	}
+static INLINE quat_t        quat_fsub(float q0, quat_t q1)          { quat_t r = { q0 - q1.x, q0 - q1.y, q0 - q1.z, q0 - q1.w }; return r;	}
+static INLINE quat_t        quat_mulf(quat_t q0, float q1)          { quat_t r = { q0.x * q1, q0.y * q1, q0.z * q1, q0.w * q1 }; return r;	}
+static INLINE quat_t        quat_fmul(float q0, quat_t q1)          { quat_t r = { q0 * q1.x, q0 * q1.y, q0 * q1.z, q0 * q1.w }; return r;	}
+static INLINE quat_t        quat_divf(quat_t q0, float q1)          { quat_t r = { q0.x / q1, q0.y / q1, q0.z / q1, q0.w / q1 }; return r;	}
+static INLINE quat_t        quat_fdiv(float q0, quat_t q1)          { quat_t r = { q0 / q1.x, q0 / q1.y, q0 / q1.z, q0 / q1.w }; return r;	}
+static INLINE bool          quat_eq(quat_t q0, quat_t q1)           { return (q0.x == q1.x && q0.y == q1.y && q0.z == q1.z && q0.w == q1.w);	}
+static INLINE bool          quat_neq(quat_t q0, quat_t q1)          { return !quat_eq(q0, q1); }
 
-static INLINE float		quat_dot(quat_t q0, quat_t q1)			{ return q0.x * q1.x + q0.y * q1.y + q0.z * q1.z + q0.w * q1.w;	}
-static INLINE float		quat_length(quat_t q)				{ return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);	}
-static INLINE quat_t		quat_conjugate(quat_t q)			{ return quat(-q.x, -q.y, -q.z, q.w);	}
-static INLINE quat_t		quat_normalize(quat_t q)			{ return (quat_length(q) > 0 ) ? quat_divf(q, quat_length(q)) : q;	}
-static INLINE quat_t		quat_inverse(quat_t q)				{ return quat_normalize(quat_conjugate(q));	}
+static INLINE float         quat_dot(quat_t q0, quat_t q1)          { return q0.x * q1.x + q0.y * q1.y + q0.z * q1.z + q0.w * q1.w;	}
+static INLINE float         quat_length(quat_t q)                   { return sqrtf(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);	}
+static INLINE quat_t		quat_conjugate(quat_t q)                { return quat(-q.x, -q.y, -q.z, q.w);	}
+static INLINE quat_t		quat_normalize(quat_t q)                { return (quat_length(q) > 0 ) ? quat_divf(q, quat_length(q)) : q;	}
+static INLINE quat_t		quat_inverse(quat_t q)                  { return quat_normalize(quat_conjugate(q));	}
 
 static INLINE quat_t
 quat_mul(quat_t q0, quat_t q1)	{
@@ -556,10 +556,10 @@ typedef struct {
     float			a, b, c, d;
 } plane_t;
 
-static INLINE plane_t		plane(float a, float b, float c, float d)	{	plane_t p = { a, b, c, d }; return p;		}
-static INLINE plane_t		plane_from(vec3_t n, float c)			{	plane_t p = { n.x, n.y, n.z, c }; return p;	}
-static INLINE vec3_t		plane_normal(plane_t p)				{	return vec3(p.a, p.b, p.c);			}
-static INLINE float		plane_constant(plane_t p)			{	return p.d;					}
+static INLINE plane_t       plane(float a, float b, float c, float d){	plane_t p = { a, b, c, d }; return p;		}
+static INLINE plane_t       plane_from(vec3_t n, float c)           {	plane_t p = { n.x, n.y, n.z, c }; return p;	}
+static INLINE vec3_t        plane_normal(plane_t p)                 {	return vec3(p.a, p.b, p.c);			}
+static INLINE float         plane_constant(plane_t p)               {	return p.d;					}
 
 /*!
  @brief normalize the plane
