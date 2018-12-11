@@ -19,7 +19,7 @@
 #define BUILDING_3DMATH_DLL
 #include "3dmath.h"
 
-#define EPSILON (1.0f / (16.0f * 1024.0f * 1024.f))
+#define EPSILON (1.0f / (1024.0f * 1024.f))
 
 ///
 /// the projection of the point onto the segment (2D)
@@ -197,13 +197,13 @@ ray3_tri3_intersection(ray3_t r, vec3_t v0, vec3_t v1, vec3_t v2, vec3_t* out) {
 
     float u = vec3_dot(tvec, pvec) / det;
 
-    if (u < 0.0f || u > 1.0f) {
+    if (u < -EPSILON || u > 1.0f + EPSILON) {
         return false; // NoIntersection
     }
 
     // calculate V parameter and test bounds
     float v = vec3_dot(r.direction, qvec) / det;
-    if (v < 0.0f || u + v > 1.0f) {
+    if (v < -EPSILON || u + v > 1.0f + 2.0f * EPSILON) {
         return false; // NoIntersection
     }
 
