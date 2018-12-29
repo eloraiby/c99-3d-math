@@ -118,6 +118,17 @@ distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt) {
 }
 
 ///
+/// distance between a point and a plane
+///
+float
+distance_to_plane(plane_t p, vec3_t pt) {
+    vec3_t  n       = plane_normal(p);
+    float   nom     = vec3_dot(pt, n) + p.d;
+    float   denom   = vec3_dot(n, n);
+    return fabs(nom) / denom;
+}
+
+///
 /// plane and ray intersection
 ///
 bool
@@ -130,6 +141,15 @@ plane_ray3_intersection(plane_t p, ray3_t r, vec3_t* out) {
                vec3_mulf(r.direction,
                      t));
     return true;
+}
+
+vec3_t
+project_to_plane(plane_t p, vec3_t pt) {
+    vec3_t  invN    = vec3_mulf(plane_normal(p), -1.0f);
+    ray3_t  ray     = ray3_from(pt, invN);
+    vec3_t  out     = pt;
+    plane_ray3_intersection(p, ray, &out);
+    return out;
 }
 
 vec3_t

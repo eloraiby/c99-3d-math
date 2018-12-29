@@ -625,12 +625,14 @@ static INLINE plane_t       plane_from(vec3_t n, float c)           {	plane_t p 
 static INLINE vec3_t        plane_normal(plane_t p)                 {	return vec3(p.a, p.b, p.c);			}
 static INLINE float         plane_constant(plane_t p)               {	return p.d;					}
 
+
 /*!
  @brief normalize the plane
  @param p the plane to normalize
  @return normalized plane
 */
-static INLINE plane_t
+static INLINE
+plane_t
 plane_normalize(plane_t p) {
     float		l	= vec3_length(plane_normal(p));
     return plane_from(vec3_divf(plane_normal(p), l), p.d * l);
@@ -640,11 +642,20 @@ plane_normalize(plane_t p) {
 **  tri3
 *******************************************************************************/
 /*! @brief get the normal of the triange */
-static INLINE vec3_t
+static INLINE
+vec3_t
 tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
     vec3_t v10 = vec3_sub(v1, v0);
     vec3_t v20 = vec3_sub(v2, v0);
     return vec3_normalize(vec3_cross(v10, v20));
+}
+
+/*! @brief plane from triangle */
+static INLINE plane_t
+tri3_plane(vec3_t v0, vec3_t v1, vec3_t v2) {
+    vec3_t  n   = tri3_normal(v0, v1, v2);
+    float   d   = -vec3_dot(n, v0);
+    return plane_from(n, d);
 }
 
 /*******************************************************************************
@@ -666,6 +677,10 @@ DLL_3DMATH_PUBLIC vec2_t            closest_on_segment2(vec2_t seg_start, vec2_t
 DLL_3DMATH_PUBLIC vec3_t            closest_on_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt);
 DLL_3DMATH_PUBLIC float             distance_to_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt);
 DLL_3DMATH_PUBLIC float             distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt);
+
+DLL_3DMATH_PUBLIC float             distance_to_plane(plane_t p, vec3_t pt);
+DLL_3DMATH_PUBLIC vec3_t            project_to_plane(plane_t p, vec3_t pt);
+
 
 /*******************************************************************************
 **
