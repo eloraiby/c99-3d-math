@@ -134,8 +134,8 @@ typedef struct {
     float	r, g, b, a;
 } color4_t;
 
-static INLINE color3_t color3(float r, float g, float b)		{	color3_t ret	= { r, g, b };		return ret;	}
-static INLINE color4_t color4(float r, float g, float b, float a)	{	color4_t ret	= { r, g, b, a };	return ret;	}
+static INLINE color3_t color3(float r, float g, float b)            {   color3_t    ret	= { r, g, b };      return ret; }
+static INLINE color4_t color4(float r, float g, float b, float a)   {   color4_t    ret	= { r, g, b, a };   return ret; }
 
 typedef struct {
     uint8_t r, g, b;
@@ -145,8 +145,8 @@ typedef struct {
     uint8_t r, g, b, a;
 } color4b_t;
 
-static INLINE color3b_t color3b(uint8_t r, uint8_t g, uint8_t b)            {	color3b_t ret	= { r, g, b };		return ret;	}
-static INLINE color4b_t color4b(uint8_t r, uint8_t g, uint8_t b, uint8_t a)	{	color4b_t ret	= { r, g, b, a };	return ret;	}
+static INLINE color3b_t color3b(uint8_t r, uint8_t g, uint8_t b)            {   color3b_t   ret = { r, g, b };      return ret; }
+static INLINE color4b_t color4b(uint8_t r, uint8_t g, uint8_t b, uint8_t a)	{   color4b_t   ret = { r, g, b, a };   return ret; }
 
 
 /*******************************************************************************
