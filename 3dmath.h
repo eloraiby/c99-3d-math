@@ -651,10 +651,35 @@ tri3_normal(vec3_t v0, vec3_t v1, vec3_t v2) {
 }
 
 /*! @brief plane from triangle */
-static INLINE plane_t
+static INLINE
+plane_t
 tri3_plane(vec3_t v0, vec3_t v1, vec3_t v2) {
     vec3_t  n   = tri3_normal(v0, v1, v2);
     float   d   = -vec3_dot(n, v0);
+    return plane_from(n, d);
+}
+
+/*******************************************************************************
+**  quad3
+*******************************************************************************/
+/*! @brief get the normal of the quad */
+static INLINE
+vec3_t
+quad3_normal(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t v3) {
+    vec3_t v10 = vec3_sub(v2, v0);
+    vec3_t v20 = vec3_sub(v3, v1);
+    return vec3_normalize(vec3_cross(v10, v20));
+}
+
+/*! @brief plane from quad */
+static INLINE
+plane_t
+quad3_plane(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t v3) {
+    vec3_t  n   = quad3_normal(v0, v1, v2, v3);
+    vec3_t  c   = vec3_mulf(vec3_add(vec3_add(v0, v1),
+                                     vec3_add(v2, v3)),
+                            0.25f);
+    float   d   = -vec3_dot(n, c);
     return plane_from(n, d);
 }
 
