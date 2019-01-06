@@ -91,6 +91,10 @@ extern "C" {
 #	define MAX(a, b)	((a > b) ? a : b)
 #endif
 
+#ifndef FABS
+#   define  FABS(X)     ((X < 0.0f) ? -X : X)
+#endif
+
 #ifndef INLINE
 #	ifdef _MSC_VER
 #		define INLINE		__forceinline

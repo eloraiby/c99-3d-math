@@ -125,7 +125,7 @@ distance_to_plane(plane_t p, vec3_t pt) {
     vec3_t  n       = plane_normal(p);
     float   nom     = vec3_dot(pt, n) + p.d;
     float   denom   = vec3_dot(n, n);
-    return fabs(nom) / denom;
+    return FABS(nom) / denom;
 }
 
 ///
