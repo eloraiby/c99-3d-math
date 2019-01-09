@@ -128,6 +128,42 @@ distance_to_plane(plane_t p, vec3_t pt) {
     return FABS(nom) / denom;
 }
 
+bool
+plane_from_lines(line3_t l0, line3_t l1, plane_t* out0, plane_t* out1) {
+    vec3_t  n   = vec3_cross(l0.direction, l1.direction);
+    if( FABS(vec3_dot(n, n)) < EPSILON * EPSILON ) {
+        // rays are parallel/overlapping
+
+        // pick a normal
+        vec3_t  d   = l0.direction;
+        float   m   = MIN(d.x, MIN(d.y, d.z));
+
+        // take the shortest axis as the normal
+        if( m == d.x ) {
+            n  = vec3(1.0f, 0.0f, 0.0f);
+        } else if( m == d.y ) {
+            n = vec3(0.0f, 1.0f, 0.0f);
+        } else {
+            n = vec3(0.0f, 0.0f, 1.0f);
+        }
+
+        return false;
+    }
+
+    n           = vec3_normalize(n);
+
+    *out0       = plane_from(n, -vec3_dot(l0.p, n));
+    *out1       = plane_from(n, -vec3_dot(l1.p, n));
+    return true;
+}
+
+float
+line3_line3_distance(line3_t l0, line3_t l1) {
+    plane_t p0, p1;
+    plane_from_lines(l0, l1, &p0, &p1);
+    return distance_to_plane(p1, l0.p);
+}
+
 ///
 /// plane and ray intersection
 ///

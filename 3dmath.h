@@ -618,6 +618,20 @@ static INLINE vec3_t		ray3_at(ray3_t r, float t)			{	return vec3_add(vec3_mulf(r
 static INLINE ray3_t		ray3_normalize(ray3_t r)			{	ray3_t ret; ret.start = r.start; r.direction = vec3_normalize(r.direction);	return ret;	}
 
 /*******************************************************************************
+**  line3
+**
+**  Similar to ray3, but is open ended in both direction
+*******************************************************************************/
+typedef struct {
+    vec3_t          p;  /* point on the line */
+    vec3_t          direction;  /* direction of the line */
+} line3_t;
+
+static INLINE line3_t       line3_t_from(vec3_t p, vec3_t direction)    {   line3_t l;  l.p = p; l.direction = direction; return l; }
+static INLINE line3_t       line3_normalize(line3_t r)              {	line3_t ret; ret.p = r.p; r.direction = vec3_normalize(r.direction); return ret; }
+
+
+/*******************************************************************************
 **  plane
 *******************************************************************************/
 typedef struct {
@@ -625,7 +639,7 @@ typedef struct {
 } plane_t;
 
 static INLINE plane_t       plane(float a, float b, float c, float d){	plane_t p = { a, b, c, d }; return p;		}
-static INLINE plane_t       plane_from(vec3_t n, float c)           {	plane_t p = { n.x, n.y, n.z, c }; return p;	}
+static INLINE plane_t       plane_from(vec3_t n, float c)           {	n = vec3_normalize(n); plane_t p = { n.x, n.y, n.z, c }; return p;	}
 static INLINE vec3_t        plane_normal(plane_t p)                 {	return vec3(p.a, p.b, p.c);			}
 static INLINE float         plane_constant(plane_t p)               {	return p.d;					}
 
@@ -710,6 +724,13 @@ DLL_3DMATH_PUBLIC float             distance_to_segment3(vec3_t seg_start, vec3_
 DLL_3DMATH_PUBLIC float             distance_to_plane(plane_t p, vec3_t pt);
 DLL_3DMATH_PUBLIC vec3_t            project_to_plane(plane_t p, vec3_t pt);
 
+/**
+** \brief planesFromRays return two planes out0 and out1 (where ray0 lays in out0 and ray1 lays in out1). Both planes are parallel
+** \return false if the rays are overlapping or parallel, true otherwise
+*/
+DLL_3DMATH_PUBLIC bool              planes_from_lines(line3_t l0, line3_t l1, plane_t* out0, plane_t* out1);
+
+DLL_3DMATH_PUBLIC float             line3_line3_distance(line3_t l0, line3_t l1);
 
 /*******************************************************************************
 **
