@@ -134,6 +134,7 @@ plane_from_lines(line3_t l0, line3_t l1, plane_t* out0, plane_t* out1) {
     if( FABS(vec3_dot(n, n)) < EPSILON * EPSILON ) {
         // rays are parallel/overlapping
 
+
         // pick a normal
         vec3_t  d   = l0.direction;
         float   m   = MIN(d.x, MIN(d.y, d.z));
@@ -163,6 +164,112 @@ line3_line3_distance(line3_t l0, line3_t l1) {
     plane_from_lines(l0, l1, &p0, &p1);
     return distance_to_plane(p1, l0.p);
 }
+
+vec2_t
+closest_point_on_segment2(vec2_t start, vec2_t end, vec2_t pt) {
+    vec2_t  seg_dir = vec2_sub(end, start);
+    vec2_t  pt_dir  = vec2_sub(pt, start);
+
+    float   d_sp    = vec2_dot(seg_dir, pt_dir);
+    float   d_ss    = vec2_dot(seg_dir, seg_dir);
+
+    if( d_sp < 0.0f ) {
+        return start;
+    } else if( d_sp > d_ss ) {
+        return end;
+    }
+
+    float   t   = d_sp / d_ss;
+    return vec2_add(start, vec2_mulf(seg_dir, t));
+}
+
+vec3_t
+closest_point_on_segment3(vec3_t start, vec3_t end, vec3_t pt)  {
+    vec3_t  seg_dir = vec3_sub(end, start);
+    vec3_t  pt_dir  = vec3_sub(pt, start);
+
+    float   d_sp    = vec3_dot(seg_dir, pt_dir);
+    float   d_ss    = vec3_dot(seg_dir, seg_dir);
+
+    if( d_sp < 0.0f ) {
+        return start;
+    } else if( d_sp > d_ss ) {
+        return end;
+    }
+
+    float   t   = d_sp / d_ss;
+    return vec3_add(start, vec3_mulf(seg_dir, t));
+}
+
+vec2_t
+closest_point_on_line2(line2_t l, vec2_t pt) {
+    vec2_t  pt_dir  = vec2_sub(pt, l.p);
+
+    float   d_lp    = vec2_dot(l.direction, pt_dir);
+    float   d_dd    = vec2_dot(l.direction, l.direction);
+
+    float   t   = d_lp / d_dd;
+    return vec2_add(l.p, vec2_mulf(l.direction, t));
+}
+
+vec3_t
+closest_point_on_line3(line3_t l, vec3_t pt) {
+    vec3_t  pt_dir  = vec3_sub(pt, l.p);
+
+    float   d_lp    = vec3_dot(l.direction, pt_dir);
+    float   d_dd    = vec3_dot(l.direction, l.direction);
+
+    float   t   = d_lp / d_dd;
+    return vec3_add(l.p, vec3_mulf(l.direction, t));
+}
+
+float
+distance_point_to_segment2(vec2_t start, vec2_t end, vec2_t pt) {
+    vec2_t  closest = closest_on_segment2(start, end, pt);
+    return vec2_length(vec2_sub(closest, pt));
+}
+
+float
+distance_point_to_segment3(vec3_t start, vec3_t end, vec3_t pt) {
+    vec3_t  closest = closest_on_segment3(start, end, pt);
+    return vec3_length(vec3_sub(closest, pt));
+}
+
+float
+distance_point_to_line2(line2_t l, vec2_t pt) {
+    vec2_t  closest = closest_point_on_line2(l, pt);
+    return vec2_length(vec2_sub(closest, pt));
+}
+
+float
+distance_point_to_line3(line3_t l, vec3_t pt) {
+    vec3_t  closest = closest_point_on_line3(l, pt);
+    return vec3_length(vec3_sub(closest, pt));
+}
+
+bool
+line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1) {
+    vec3_t      n   = vec3_cross(l0.direction, l1.direction);
+
+    // TODO: check when | n | < epsilon
+
+    mat3_t      m   = mat3(l0.direction.x, l0.direction.y, l0.direction.z,
+                           l1.direction.x, l1.direction.y, l1.direction.z,
+                           n.x, n.y, n.z);
+    mat3_t      inv_m   = mat3_inverse(m);
+
+    // project points to the new coordinate system
+    vec3_t      p0  = mat3_mul_vec3(inv_m, l0.p);
+    vec3_t      p1  = mat3_mul_vec3(inv_m, l1.p);
+
+    vec3_t      p   = vec3(p0.x, p1.y, 0.0f);
+
+    // now project back to the old coordinate system
+    *out0   = mat3_mul_vec3(m, vec3(p.x, p.y, p0.z));
+    *out1   = mat3_mul_vec3(m, vec3(p.x, p.y, p1.z));
+    return true;
+}
+
 
 ///
 /// plane and ray intersection

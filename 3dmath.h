@@ -630,6 +630,16 @@ typedef struct {
 static INLINE line3_t       line3_t_from(vec3_t p, vec3_t direction)    {   line3_t l;  l.p = p; l.direction = direction; return l; }
 static INLINE line3_t       line3_normalize(line3_t r)              {	line3_t ret; ret.p = r.p; r.direction = vec3_normalize(r.direction); return ret; }
 
+/*******************************************************************************
+**  line2
+*******************************************************************************/
+typedef struct {
+    vec2_t          p;  /* point on the line */
+    vec2_t          direction;  /* direction of the line */
+} line2_t;
+
+static INLINE line2_t       line2_t_from(vec2_t p, vec2_t direction)    {   line2_t l;  l.p = p; l.direction = direction; return l; }
+static INLINE line2_t       line2_normalize(line2_t r)                  {   line2_t ret; ret.p = r.p; r.direction = vec2_normalize(r.direction); return ret; }
 
 /*******************************************************************************
 **  plane
@@ -731,6 +741,23 @@ DLL_3DMATH_PUBLIC vec3_t            project_to_plane(plane_t p, vec3_t pt);
 DLL_3DMATH_PUBLIC bool              planes_from_lines(line3_t l0, line3_t l1, plane_t* out0, plane_t* out1);
 
 DLL_3DMATH_PUBLIC float             line3_line3_distance(line3_t l0, line3_t l1);
+
+DLL_3DMATH_PUBLIC vec2_t            closest_point_on_segment2(vec2_t start, vec2_t end, vec2_t pt);
+DLL_3DMATH_PUBLIC vec3_t            closest_point_on_segment3(vec3_t start, vec3_t end, vec3_t pt);
+
+DLL_3DMATH_PUBLIC vec2_t            closest_point_on_line2(line2_t l, vec2_t pt);
+DLL_3DMATH_PUBLIC vec3_t            closest_point_on_line3(line3_t l, vec3_t pt);
+
+DLL_3DMATH_PUBLIC float             distance_point_to_segment2(vec2_t start, vec2_t end, vec2_t pt);
+DLL_3DMATH_PUBLIC float             distance_point_to_segment3(vec3_t start, vec3_t end, vec3_t pt);
+
+DLL_3DMATH_PUBLIC float             distance_point_to_line2(line2_t l, vec2_t pt);
+DLL_3DMATH_PUBLIC float             distance_point_to_line3(line3_t l, vec3_t pt);
+
+DLL_3DMATH_PUBLIC bool              line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1);
+
+
+
 
 /*******************************************************************************
 **
