@@ -133,22 +133,23 @@ plane_from_lines(line3_t l0, line3_t l1, plane_t* out0, plane_t* out1) {
     vec3_t  n   = vec3_cross(l0.direction, l1.direction);
     if( FABS(vec3_dot(n, n)) < EPSILON * EPSILON ) {
         // rays are parallel/overlapping
+        vec3_t  p0, p1;
+        line3_line3_shortest_segment(l0, l1, &p0, &p1);
+        n   = vec3_sub(p1, p0);
+        if( vec3_length(n) < EPSILON ) {
+            // pick a normal
+            vec3_t  d   = l0.direction;
+            float   m   = MIN(d.x, MIN(d.y, d.z));
 
-
-        // pick a normal
-        vec3_t  d   = l0.direction;
-        float   m   = MIN(d.x, MIN(d.y, d.z));
-
-        // take the shortest axis as the normal
-        if( m == d.x ) {
-            n  = vec3(1.0f, 0.0f, 0.0f);
-        } else if( m == d.y ) {
-            n = vec3(0.0f, 1.0f, 0.0f);
-        } else {
-            n = vec3(0.0f, 0.0f, 1.0f);
+            // take the shortest axis as the normal
+            if( m == d.x ) {
+                n  = vec3(1.0f, 0.0f, 0.0f);
+            } else if( m == d.y ) {
+                n = vec3(0.0f, 1.0f, 0.0f);
+            } else {
+                n = vec3(0.0f, 0.0f, 1.0f);
+            }
         }
-
-        return false;
     }
 
     n           = vec3_normalize(n);
@@ -160,9 +161,9 @@ plane_from_lines(line3_t l0, line3_t l1, plane_t* out0, plane_t* out1) {
 
 float
 line3_line3_distance(line3_t l0, line3_t l1) {
-    plane_t p0, p1;
-    plane_from_lines(l0, l1, &p0, &p1);
-    return distance_to_plane(p1, l0.p);
+    vec3_t  p0, p1;
+    line3_line3_shortest_segment(l0, l1, &p0, &p1);
+    return vec3_length(vec3_sub(p1, p0));
 }
 
 vec2_t
@@ -251,7 +252,12 @@ bool
 line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1) {
     vec3_t      n   = vec3_cross(l0.direction, l1.direction);
 
-    // TODO: check when | n | < epsilon
+    // when || n || < epsilon, either the lines are parallel or they are overlapping
+    if( vec3_dot(n, n) < EPSILON * EPSILON ) {
+        *out0   = closest_point_on_line3(l0, l1.p);
+        *out1   = closest_point_on_line3(l1, *out0);
+        return false;
+    }
 
     mat3_t      m   = mat3(l0.direction.x, l0.direction.y, l0.direction.z,
                            l1.direction.x, l1.direction.y, l1.direction.z,

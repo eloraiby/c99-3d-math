@@ -757,8 +757,6 @@ DLL_3DMATH_PUBLIC float             distance_point_to_line3(line3_t l, vec3_t pt
 DLL_3DMATH_PUBLIC bool              line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1);
 
 
-
-
 /*******************************************************************************
 **
 ** transforms
