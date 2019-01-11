@@ -48,23 +48,23 @@ closest_on_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt) {
 /// the projection of the point onto the segment (3D)
 ///
 vec3_t
-closest_on_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt) {
-    vec3_t  seg_dir	= vec3_sub(seg_end, seg_start);
-    vec3_t  pt_dir	= vec3_sub(pt, seg_start);
+closest_on_segment3(segment3_t seg, vec3_t pt) {
+    vec3_t  seg_dir	= vec3_sub(seg.e, seg.s);
+    vec3_t  pt_dir	= vec3_sub(pt, seg.s);
 
 
     float d_sp      = vec3_dot(seg_dir, pt_dir);
     float d_ss      = vec3_dot(seg_dir, seg_dir);	// remember, always > 0
 
     if( d_sp < 0.0f )
-        return seg_start;
+        return seg.s;
     else if( d_sp > d_ss )
-        return seg_end;
+        return seg.e;
 
     float t = d_sp / d_ss; // should be float ?
 
     // proj	= seg.start + t * seg_dir;
-    return vec3_add(vec3_mulf(seg_dir, t), seg_start);
+    return vec3_add(vec3_mulf(seg_dir, t), seg.s);
 }
 
 ///
@@ -96,10 +96,10 @@ distance_to_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt) {
 /// distance between a point and a segment (2D)
 ///
 float
-distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt) {
+distance_to_segment3(segment3_t seg, vec3_t pt) {
 
-    vec3_t  seg_dir	= vec3_sub(seg_end, seg_start);
-    vec3_t  pt_dir  = vec3_sub(pt, seg_start);
+    vec3_t  seg_dir	= vec3_sub(seg.e, seg.s);
+    vec3_t  pt_dir  = vec3_sub(pt, seg.s);
 
     float   d_sp    = vec3_dot(seg_dir, pt_dir);
     float   d_ss    = vec3_dot(seg_dir, seg_dir);	// remember, always > 0
@@ -107,13 +107,13 @@ distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt) {
     if( d_sp < 0.0f )
         return vec3_length(pt_dir);
     else if( d_sp > d_ss )
-        return vec3_length(vec3_sub(pt, seg_end));
+        return vec3_length(vec3_sub(pt, seg.e));
 
     float   t   = d_sp / d_ss;	// should be float ?
 
     // proj	= seg.start + t * seg_dir;
     return vec3_length(vec3_sub(pt,
-                                vec3_add(seg_start,
+                                vec3_add(seg.s,
                                          vec3_mulf(seg_dir, t))));
 }
 
@@ -185,21 +185,21 @@ closest_point_on_segment2(vec2_t start, vec2_t end, vec2_t pt) {
 }
 
 vec3_t
-closest_point_on_segment3(vec3_t start, vec3_t end, vec3_t pt)  {
-    vec3_t  seg_dir = vec3_sub(end, start);
-    vec3_t  pt_dir  = vec3_sub(pt, start);
+closest_point_on_segment3(segment3_t seg, vec3_t pt)  {
+    vec3_t  seg_dir = vec3_sub(seg.e, seg.s);
+    vec3_t  pt_dir  = vec3_sub(pt, seg.s);
 
     float   d_sp    = vec3_dot(seg_dir, pt_dir);
     float   d_ss    = vec3_dot(seg_dir, seg_dir);
 
     if( d_sp < 0.0f ) {
-        return start;
+        return seg.s;
     } else if( d_sp > d_ss ) {
-        return end;
+        return seg.e;
     }
 
     float   t   = d_sp / d_ss;
-    return vec3_add(start, vec3_mulf(seg_dir, t));
+    return vec3_add(seg.s, vec3_mulf(seg_dir, t));
 }
 
 vec2_t
@@ -231,8 +231,8 @@ distance_point_to_segment2(vec2_t start, vec2_t end, vec2_t pt) {
 }
 
 float
-distance_point_to_segment3(vec3_t start, vec3_t end, vec3_t pt) {
-    vec3_t  closest = closest_on_segment3(start, end, pt);
+distance_point_to_segment3(segment3_t seg, vec3_t pt) {
+    vec3_t  closest = closest_on_segment3(seg, pt);
     return vec3_length(vec3_sub(closest, pt));
 }
 

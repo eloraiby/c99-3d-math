@@ -642,6 +642,16 @@ static INLINE line2_t       line2_t_from(vec2_t p, vec2_t direction)    {   line
 static INLINE line2_t       line2_normalize(line2_t r)                  {   line2_t ret; ret.p = r.p; r.direction = vec2_normalize(r.direction); return ret; }
 
 /*******************************************************************************
+**  segment3
+*******************************************************************************/
+typedef struct {
+    vec3_t          s;
+    vec3_t          e;
+} segment3_t;
+
+static INLINE segment3_t    segment3(vec3_t start, vec3_t end)      { segment3_t    s = { start, end}; return s; }
+
+/*******************************************************************************
 **  plane
 *******************************************************************************/
 typedef struct {
@@ -727,9 +737,9 @@ DLL_3DMATH_PUBLIC vec2_t            tri2_get_point_barycentric_coordinates(vec2_
 DLL_3DMATH_PUBLIC bool              ray3_tri3_intersection(ray3_t r, vec3_t v1, vec3_t v2, vec3_t v3, vec3_t* out);
 
 DLL_3DMATH_PUBLIC vec2_t            closest_on_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt);
-DLL_3DMATH_PUBLIC vec3_t            closest_on_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt);
+DLL_3DMATH_PUBLIC vec3_t            closest_on_segment3(segment3_t seg, vec3_t pt);
 DLL_3DMATH_PUBLIC float             distance_to_segment2(vec2_t seg_start, vec2_t seg_end, vec2_t pt);
-DLL_3DMATH_PUBLIC float             distance_to_segment3(vec3_t seg_start, vec3_t seg_end, vec3_t pt);
+DLL_3DMATH_PUBLIC float             distance_to_segment3(segment3_t seg, vec3_t pt);
 
 DLL_3DMATH_PUBLIC float             distance_to_plane(plane_t p, vec3_t pt);
 DLL_3DMATH_PUBLIC vec3_t            project_to_plane(plane_t p, vec3_t pt);
@@ -743,13 +753,13 @@ DLL_3DMATH_PUBLIC bool              planes_from_lines(line3_t l0, line3_t l1, pl
 DLL_3DMATH_PUBLIC float             line3_line3_distance(line3_t l0, line3_t l1);
 
 DLL_3DMATH_PUBLIC vec2_t            closest_point_on_segment2(vec2_t start, vec2_t end, vec2_t pt);
-DLL_3DMATH_PUBLIC vec3_t            closest_point_on_segment3(vec3_t start, vec3_t end, vec3_t pt);
+DLL_3DMATH_PUBLIC vec3_t            closest_point_on_segment3(segment3_t seg, vec3_t pt);
 
 DLL_3DMATH_PUBLIC vec2_t            closest_point_on_line2(line2_t l, vec2_t pt);
 DLL_3DMATH_PUBLIC vec3_t            closest_point_on_line3(line3_t l, vec3_t pt);
 
 DLL_3DMATH_PUBLIC float             distance_point_to_segment2(vec2_t start, vec2_t end, vec2_t pt);
-DLL_3DMATH_PUBLIC float             distance_point_to_segment3(vec3_t start, vec3_t end, vec3_t pt);
+DLL_3DMATH_PUBLIC float             distance_point_to_segment3(segment3_t seg, vec3_t pt);
 
 DLL_3DMATH_PUBLIC float             distance_point_to_line2(line2_t l, vec2_t pt);
 DLL_3DMATH_PUBLIC float             distance_point_to_line3(line3_t l, vec3_t pt);
