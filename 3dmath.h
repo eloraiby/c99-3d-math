@@ -125,6 +125,7 @@ extern "C" {
 #	endif
 #endif
 
+static INLINE float     sqrf(float f) { return f * f; }
 /*******************************************************************************
 **
 ** colors
@@ -567,34 +568,22 @@ static INLINE irect_t       irect_intersect(irect_t r0, irect_t r1) {
 **  box3
 *******************************************************************************/
 typedef struct {
-    vec3_t		center;
-    vec3_t		extent;
+    vec3_t		min;
+    vec3_t		max;
 } box3_t;
 
-static INLINE box3_t		box3(vec3_t center, vec3_t extent)	{ box3_t b; b.center = center; b.extent = extent; return b; }
-static INLINE vec3_t		box3_get_min(box3_t b)			{ return vec3_sub(b.center, b.extent); }
-static INLINE vec3_t		box3_get_max(box3_t b)			{ return vec3_add(b.center, b.extent); }
-
-static INLINE box3_t
-box3_from_min_max(vec3_t min, vec3_t max) {
-    box3_t res;
-    res.center = vec3_mulf(vec3_add(min, max), 0.5f);
-    res.extent = vec3_sub(max, res.center);
-    return res;
-}
+static INLINE box3_t		box3(vec3_t min, vec3_t max)    { box3_t b; b.min = vec3_min(min, max); b.max = vec3_max(min, max); return b; }
 
 static INLINE box3_t
 box3_intersect(box3_t a, box3_t b) {
-    vec3_t	min_a	= box3_get_min(a);
-    vec3_t	max_a	= box3_get_max(a);
-    vec3_t	min_b	= box3_get_min(b);
-    vec3_t	max_b	= box3_get_max(b);
+    vec3_t	min_r	= vec3_max(a.min, b.min);
+    vec3_t	max_r	= vec3_min(a.max, b.max);
 
-    vec3_t	min_r	= vec3_max(min_a, min_b);
-    vec3_t	max_r	= vec3_min(max_a, max_b);
-
-    return box3_from_min_max(min_r, max_r);
+    return box3(min_r, max_r);
 }
+static INLINE vec3_t        box3_center(box3_t b) { return vec3_mulf(vec3_add(b.max, b.min), 0.5f); }
+static INLINE vec3_t        box3_extent(box3_t b) { vec3_t c = box3_center(b); return vec3_sub(b.max, c); }
+DLL_3DMATH_PUBLIC void      box3_subdivide(box3_t b, box3_t out[8]);
 
 /*******************************************************************************
 ** ray3
@@ -766,6 +755,7 @@ DLL_3DMATH_PUBLIC float             distance_point_to_line3(line3_t l, vec3_t pt
 
 DLL_3DMATH_PUBLIC bool              line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1);
 
+DLL_3DMATH_PUBLIC bool              intersect_box3_sphere(box3_t b, vec3_t c, float r);
 
 /*******************************************************************************
 **

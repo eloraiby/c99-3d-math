@@ -380,3 +380,19 @@ ray3_tri3_intersection(ray3_t r, vec3_t v0, vec3_t v1, vec3_t v2, vec3_t* out) {
     *out = vec3_add(r.start, vec3_mulf(r.direction, t));
     return true; //Intersect
 }
+
+bool
+intersect_box3_sphere(box3_t b, vec3_t c, float r) {
+    float dist = 0.0f;
+
+    if (c.x < b.min.x) { dist += sqrf(c.x - b.min.x); }
+    else if (c.x > b.max.x) { dist += sqrf(c.x - b.max.x); }
+
+    if (c.y < b.min.y) { dist += sqrf(c.y - b.min.y); }
+    else if (c.y > b.max.y) { dist += sqrf(c.y - b.max.y); }
+
+    if (c.z < b.min.z) { dist += sqrf(c.z - b.min.z); }
+    else if (c.z > b.max.z) { dist += sqrf(c.z - b.max.z); }
+
+    return r * r > dist;
+}
