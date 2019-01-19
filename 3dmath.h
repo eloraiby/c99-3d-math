@@ -583,6 +583,7 @@ box3_intersect(box3_t a, box3_t b) {
 }
 static INLINE vec3_t        box3_center(box3_t b) { return vec3_mulf(vec3_add(b.max, b.min), 0.5f); }
 static INLINE vec3_t        box3_extent(box3_t b) { vec3_t c = box3_center(b); return vec3_sub(b.max, c); }
+
 DLL_3DMATH_PUBLIC void      box3_subdivide(box3_t b, box3_t out[8]);
 
 /*******************************************************************************
@@ -756,6 +757,7 @@ DLL_3DMATH_PUBLIC float             distance_point_to_line3(line3_t l, vec3_t pt
 DLL_3DMATH_PUBLIC bool              line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1);
 
 DLL_3DMATH_PUBLIC bool              intersect_box3_sphere(box3_t b, vec3_t c, float r);
+DLL_3DMATH_PUBLIC bool              intersect_tri3_sphere(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t center, float radius);
 
 /*******************************************************************************
 **

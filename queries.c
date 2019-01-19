@@ -396,3 +396,32 @@ intersect_box3_sphere(box3_t b, vec3_t c, float r) {
 
     return r * r > dist;
 }
+
+static inline
+bool
+is_in_0_1_range(float x) {
+    return x >= 0.0f && x <= 1.0f;
+}
+
+bool
+intersect_tri3_sphere(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t center, float radius) {
+    vec3_t  uvw = tri3_get_point_barycentric_coordinates(v0, v1, v2, center);
+    if( is_in_0_1_range(uvw.x) && is_in_0_1_range(uvw.y) && is_in_0_1_range(uvw.z) ) {
+        plane_t p   = tri3_plane(v0, v1, v2);
+        if( distance_to_plane(p, center) <= radius ) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {    // point is outside, check the distance from center to segments
+        float   d0  = distance_to_segment3(segment3(v0, v1), center);
+        float   d1  = distance_to_segment3(segment3(v1, v2), center);
+        float   d2  = distance_to_segment3(segment3(v2, v0), center);
+        float   m   = MIN(d0, MIN(d1, d2));
+        if( m <= radius ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
