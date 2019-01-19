@@ -18,7 +18,9 @@
 */
 #include "3dmath.h"
 
-static ivec3_t cube_table[8] = {
+static
+ivec3_t
+cube_table[8] = {
     { 0, 1, 0 },
     { 1, 1, 0 },
     { 1, 1, 1 },
