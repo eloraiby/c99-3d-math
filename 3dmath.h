@@ -584,6 +584,20 @@ box3_intersect(box3_t a, box3_t b) {
 static INLINE vec3_t        box3_center(box3_t b) { return vec3_mulf(vec3_add(b.max, b.min), 0.5f); }
 static INLINE vec3_t        box3_extent(box3_t b) { vec3_t c = box3_center(b); return vec3_sub(b.max, c); }
 
+static INLINE
+bool
+box3_overlap(box3_t a, box3_t b) {
+    if (a.max.x < b.min.x) return false;
+    if (a.max.y < b.min.y) return false;
+    if (a.max.z < b.min.z) return false;
+
+    if (a.min.x > b.max.x) return false;
+    if (a.min.y > b.max.y) return false;
+    if (a.min.z > b.max.z) return false;
+
+    return true;
+}
+
 DLL_3DMATH_PUBLIC void      box3_subdivide(box3_t b, box3_t out[8]);
 
 /*******************************************************************************
