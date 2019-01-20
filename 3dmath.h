@@ -757,6 +757,7 @@ DLL_3DMATH_PUBLIC float             distance_point_to_line3(line3_t l, vec3_t pt
 DLL_3DMATH_PUBLIC bool              line3_line3_shortest_segment(line3_t l0, line3_t l1, vec3_t* out0, vec3_t* out1);
 
 DLL_3DMATH_PUBLIC bool              intersect_box3_sphere(box3_t b, vec3_t c, float r);
+DLL_3DMATH_PUBLIC bool              intersect_box3_ray3(box3_t b, ray3_t r);
 DLL_3DMATH_PUBLIC bool              intersect_tri3_sphere(vec3_t v0, vec3_t v1, vec3_t v2, vec3_t center, float radius);
 
 /*******************************************************************************

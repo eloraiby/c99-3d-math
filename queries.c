@@ -397,6 +397,34 @@ intersect_box3_sphere(box3_t b, vec3_t c, float r) {
     return r * r > dist;
 }
 
+bool
+intersect_box3_ray3(box3_t b, ray3_t r) {
+    // From the paper: An Efficient and Robust Ray–Box Intersection Algorithm by A. Williams et. al.
+    // "... Note also that since IEEE arithmetic guarantees that a positive number divided by zero
+    // is +\infinity and a negative number divided by zero is -\infinity, the code works for vertical
+    // and horizontal line ..."
+    float   tx0 = (b.min.x - r.start.x) / r.direction.x;
+    float   tx1 = (b.max.x - r.start.x) / r.direction.x;
+
+    float   tmin    = MIN(tx0, tx1);
+    float   tmax    = MAX(tx0, tx1);
+
+    float   ty0 = (b.min.y - r.start.y) / r.direction.y;
+    float   ty1 = (b.max.y - r.start.y) / r.direction.y;
+
+    tmin    = MIN(tmin, MIN(ty0, ty1));
+    tmax    = MAX(tmax, MAX(ty0, ty1));
+
+    float   tz0 = (b.min.z - r.start.z) / r.direction.z;
+    float   tz1 = (b.max.z - r.start.z) / r.direction.z;
+
+    tmin    = MIN(tmin, MIN(tz0, tz1));
+    tmax    = MAX(tmax, MAX(tz0, tz1));
+
+    return tmax >= tmin;
+}
+
+
 static inline
 bool
 is_in_0_1_range(float x) {
