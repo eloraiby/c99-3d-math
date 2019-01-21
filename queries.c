@@ -403,25 +403,31 @@ intersect_box3_ray3(box3_t b, ray3_t r) {
     // "... Note also that since IEEE arithmetic guarantees that a positive number divided by zero
     // is +\infinity and a negative number divided by zero is -\infinity, the code works for vertical
     // and horizontal line ..."
-    float   tx0 = (b.min.x - r.start.x) / r.direction.x;
-    float   tx1 = (b.max.x - r.start.x) / r.direction.x;
+    float   tmin = -INFINITY, tmax = INFINITY;
 
-    float   tmin    = MIN(tx0, tx1);
-    float   tmax    = MAX(tx0, tx1);
+    float   t0, t1;
 
-    float   ty0 = (b.min.y - r.start.y) / r.direction.y;
-    float   ty1 = (b.max.y - r.start.y) / r.direction.y;
+    t0  = (b.min.x - r.start.x) / r.direction.x;
+    t1  = (b.max.x - r.start.x) / r.direction.x;
 
-    tmin    = MIN(tmin, MIN(ty0, ty1));
-    tmax    = MAX(tmax, MAX(ty0, ty1));
+    tmin    = MAX(tmin, MIN(t0, t1));
+    tmax    = MIN(tmax, MAX(t0, t1));
 
-    float   tz0 = (b.min.z - r.start.z) / r.direction.z;
-    float   tz1 = (b.max.z - r.start.z) / r.direction.z;
+    t0  = (b.min.y - r.start.y) / r.direction.y;
+    t1  = (b.max.y - r.start.y) / r.direction.y;
 
-    tmin    = MIN(tmin, MIN(tz0, tz1));
-    tmax    = MAX(tmax, MAX(tz0, tz1));
+    tmin    = MAX(tmin, MIN(t0, t1));
+    tmax    = MIN(tmax, MAX(t0, t1));
 
-    return tmax >= tmin;
+
+    t0  = (b.min.z - r.start.z) / r.direction.z;
+    t1  = (b.max.z - r.start.z) / r.direction.z;
+
+    tmin    = MAX(tmin, MIN(t0, t1));
+    tmax    = MIN(tmax, MAX(t0, t1));
+
+
+    return tmax > MAX(tmin, 0.0f);
 }
 
 
