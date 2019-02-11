@@ -232,6 +232,10 @@ static INLINE ivec2_t ivec2_sub(ivec2_t a, ivec2_t b)			{	return ivec2( a.x - b.
 static INLINE ivec3_t ivec3_sub(ivec3_t a, ivec3_t b)			{	return ivec3( a.x - b.x, a.y - b.y, a.z - b.z );			}
 static INLINE ivec4_t ivec4_sub(ivec4_t a, ivec4_t b)			{	return ivec4( a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w );	}
 
+static INLINE ivec2_t ivec2_mul(ivec2_t a, ivec2_t b)           {	return ivec2( a.x * b.x, a.y * b.y );				}
+static INLINE ivec3_t ivec3_mul(ivec3_t a, ivec3_t b)           {	return ivec3( a.x * b.x, a.y * b.y, a.z * b.z );			}
+static INLINE ivec4_t ivec4_mul(ivec4_t a, ivec4_t b)           {	return ivec4( a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w );		}
+
 static INLINE ivec2_t ivec2_muli(ivec2_t a, int b)              {	return ivec2( a.x * b, a.y * b );				}
 static INLINE ivec3_t ivec3_muli(ivec3_t a, int b)              {	return ivec3( a.x * b, a.y * b, a.z * b );			}
 static INLINE ivec4_t ivec4_muli(ivec4_t a, int b)              {	return ivec4( a.x * b, a.y * b, a.z * b, a.w * b );		}
@@ -263,6 +267,10 @@ static INLINE vec4_t vec4_add(vec4_t a, vec4_t b)			{	return vec4( a.x + b.x, a.
 static INLINE vec2_t vec2_sub(vec2_t a, vec2_t b)			{	return vec2( a.x - b.x, a.y - b.y );				}
 static INLINE vec3_t vec3_sub(vec3_t a, vec3_t b)			{	return vec3( a.x - b.x, a.y - b.y, a.z - b.z );			}
 static INLINE vec4_t vec4_sub(vec4_t a, vec4_t b)			{	return vec4( a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w );	}
+
+static INLINE vec2_t vec2_mul(vec2_t a, vec2_t b)           {	return vec2( a.x * b.x, a.y * b.y );				}
+static INLINE vec3_t vec3_mul(vec3_t a, vec3_t b)           {	return vec3( a.x * b.x, a.y * b.y, a.z * b.z );			}
+static INLINE vec4_t vec4_mul(vec4_t a, vec4_t b)           {	return vec4( a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w );		}
 
 static INLINE vec2_t vec2_mulf(vec2_t a, float b)			{	return vec2( a.x * b, a.y * b );				}
 static INLINE vec3_t vec3_mulf(vec3_t a, float b)			{	return vec3( a.x * b, a.y * b, a.z * b );			}
@@ -302,6 +310,10 @@ static INLINE dvec4_t dvec4_add(dvec4_t a, dvec4_t b)			{	return dvec4( a.x + b.
 static INLINE dvec2_t dvec2_sub(dvec2_t a, dvec2_t b)			{	return dvec2( a.x - b.x, a.y - b.y );				}
 static INLINE dvec3_t dvec3_sub(dvec3_t a, dvec3_t b)			{	return dvec3( a.x - b.x, a.y - b.y, a.z - b.z );			}
 static INLINE dvec4_t dvec4_sub(dvec4_t a, dvec4_t b)			{	return dvec4( a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w );	}
+
+static INLINE dvec2_t dvec2_mul(dvec2_t a, dvec2_t b)           {	return dvec2( a.x * b.x, a.y * b.y );				}
+static INLINE dvec3_t dvec3_mul(dvec3_t a, dvec3_t b)           {	return dvec3( a.x * b.x, a.y * b.y, a.z * b.z );			}
+static INLINE dvec4_t dvec4_mul(dvec4_t a, dvec4_t b)           {	return dvec4( a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w );		}
 
 static INLINE dvec2_t dvec2_mulf(dvec2_t a, double b)			{	return dvec2( a.x * b, a.y * b );				}
 static INLINE dvec3_t dvec3_mulf(dvec3_t a, double b)			{	return dvec3( a.x * b, a.y * b, a.z * b );			}
