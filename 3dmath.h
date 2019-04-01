@@ -377,7 +377,7 @@ static INLINE dvec4_t dvec4_normalize(dvec4_t v)				{	double len = dvec4_length(
 *******************************************************************************/
 /*
 ** matX_t structure
-** The matrix is layed out as the following:
+** The matrix is layed out as the following (column major):
 **        | m0 mN   ... |   | v[0].x v[1].x ... |
 **   M =  | m1 mN+1 ... | = | v[0].y v[1].y ... |
 **        | .. ..   ... |   | ...    ...    ... |
