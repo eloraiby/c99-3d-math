@@ -445,6 +445,8 @@ DLL_3DMATH_PUBLIC float mat2_determinant(mat2_t m);
 DLL_3DMATH_PUBLIC float mat3_determinant(mat3_t m);
 DLL_3DMATH_PUBLIC float mat4_determinant(mat4_t m);
 
+DLL_3DMATH_PUBLIC mat3_t mat3_from_mat4(mat4_t m);
+
 /* v' = m * v */
 static INLINE vec2_t mat2_mul_vec2(mat2_t m, vec2_t v) {
     vec2_t	r0	= mat2_row(m, 0);
