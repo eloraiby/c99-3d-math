@@ -198,15 +198,15 @@ typedef struct {
 } dvec4_t;
 
 /* constructors */
-static INLINE ivec2_t ivec2(int x, int y)				{	ivec2_t	ret	= { x, y };		return ret;		}
-static INLINE ivec3_t ivec3(int x, int y, int z)			{	ivec3_t	ret	= { x, y, z };		return ret;		}
-static INLINE ivec4_t ivec4(int x, int y, int z, int w)		{	ivec4_t	ret	= { x, y, z, w };	return ret;		}
+static INLINE ivec2_t ivec2(int x, int y)               {   ivec2_t ret = { x, y };         return  ret;    }
+static INLINE ivec3_t ivec3(int x, int y, int z)        {   ivec3_t ret = { x, y, z };      return  ret;    }
+static INLINE ivec4_t ivec4(int x, int y, int z, int w) {   ivec4_t ret = { x, y, z, w };   return  ret;    }
 
-static INLINE vec2_t vec2(float x, float y)				{	vec2_t	ret	= { x, y };		return ret;		}
-static INLINE vec3_t vec3(float x, float y, float z)			{	vec3_t	ret	= { x, y, z };		return ret;		}
-static INLINE vec4_t vec4(float x, float y, float z, float w)		{	vec4_t	ret	= { x, y, z, w };	return ret;		}
+static INLINE vec2_t vec2(float x, float y)             {	vec2_t  ret = { x, y };         return  ret;    }
+static INLINE vec3_t vec3(float x, float y, float z)    {	vec3_t  ret = { x, y, z };      return  ret;    }
+static INLINE vec4_t vec4(float x, float y, float z, float w)   {   vec4_t  ret = { x, y, z, w };   return  ret;    }
 
-static INLINE dvec2_t dvec2(double x, double y)				{	dvec2_t	ret	= { x, y };		return ret;		}
+static INLINE dvec2_t dvec2(double x, double y)         {   dvec2_t ret	= { x, y };		return ret;		}
 static INLINE dvec3_t dvec3(double x, double y, double z)			{	dvec3_t	ret	= { x, y, z };		return ret;		}
 static INLINE dvec4_t dvec4(double x, double y, double z, double w)		{	dvec4_t	ret	= { x, y, z, w };	return ret;		}
 
@@ -217,6 +217,11 @@ static INLINE dvec4_t dvec4_of_vec4(vec4_t v)		{	dvec4_t	ret	= { (double)v.x, (d
 static INLINE vec2_t vec2_of_dvec2(dvec2_t v)				{	vec2_t	ret	= { (float)v.x, (float)v.y };		return ret;		}
 static INLINE vec3_t vec3_of_dvec3(dvec3_t v)			{	vec3_t	ret	= { (float)v.x, (float)v.y, (float)v.z };		return ret;		}
 static INLINE vec4_t vec4_of_dvec4(dvec4_t v)		{	vec4_t	ret	= { (float)v.x, (float)v.y, (float)v.z, (float)v.w };	return ret;		}
+
+/* conversion */
+static INLINE vec2_t ivec2_to_vec2(ivec2_t iv)          {   vec2_t ret = { (float)iv.x, (float)iv.y };  return ret; }
+static INLINE vec3_t ivec3_to_vec3(ivec3_t iv)          {   vec3_t ret = { (float)iv.x, (float)iv.y, (float)iv.z };  return ret; }
+static INLINE vec4_t ivec4_to_vec4(ivec4_t iv)          {   vec4_t ret = { (float)iv.x, (float)iv.y, (float)iv.z, (float)iv.w };  return ret; }
 
 /* arithmetic operations */
 /* int */
